@@ -17,7 +17,7 @@ class BaseViewController: UIViewController {
     
     // MARK: - StatusBar Methods
     override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .darkContent
+        return .default
     }
     
     override var preferredStatusBarUpdateAnimation : UIStatusBarAnimation {
