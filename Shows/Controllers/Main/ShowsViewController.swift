@@ -15,11 +15,18 @@ class ShowsViewController: UIViewController {
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupUI()
     }
     
     //MARK: - Custom Methods
     
+    func setupUI() {
+        self.tblShows.register(UINib(nibName: "ShowTVCell", bundle: nil), forCellReuseIdentifier: "ShowTVCell_ID")
+    }
+    
     func clearKeychain() {
+        UserDefaults.standard.set(false, forKey: Constants.k_RememberMe)
         UserDefaults.standard.removeObject(forKey: Constants.k_EmailUser)
         
         do {
@@ -40,15 +47,15 @@ class ShowsViewController: UIViewController {
     //MARK: - IBAction Methods
     
     @IBAction func btnLogout(_ sender: UIButton) {
-        self.navigationController?.popViewController(animated: true)
-        
         clearKeychain()
+        
+         self.navigationController?.popViewController(animated: true)
     }
     
 
 }
 
-extension ShowsViewController: UITableViewDataSource {
+extension ShowsViewController: UITableViewDataSource, UITableViewDelegate {
     
     //MARK: - UITableViewDataSource
     
@@ -62,5 +69,15 @@ extension ShowsViewController: UITableViewDataSource {
         }
         
         return cell
+    }
+    
+    //MARK: - UITableViewDelegate Methods
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 98
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

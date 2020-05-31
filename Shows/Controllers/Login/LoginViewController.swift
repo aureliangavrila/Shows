@@ -25,7 +25,13 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         loadCredentials()
+        enableLoginButton()
     }
     
     // MARK: - Custom Methods
@@ -78,7 +84,10 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
                 print("Error reading password from keychain - \(error)")
             }
         }
-        
+        else {
+            txfEmail.text = ""
+            txfPassword.text = ""
+        }
     }
     
     //MARK: - IBActions Methods
@@ -102,19 +111,21 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         //>>    Save credentials
         UserDefaults.standard.set(rememberMe, forKey: Constants.k_RememberMe)
         
-        let email = txfEmail.text!
-        let password = txfPassword.text!
-        
-        UserDefaults.standard.set(email, forKey: Constants.k_EmailUser)
-        
-        do {
-            let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
-                                                    account: email,
-                                                    accessGroup: KeychainConfiguration.accessGroup)
+        if rememberMe {
+            let email = txfEmail.text!
+            let password = txfPassword.text!
             
-            try passwordItem.savePassword(password)
-        } catch {
-            print(error.localizedDescription)
+            UserDefaults.standard.set(email, forKey: Constants.k_EmailUser)
+            
+            do {
+                let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
+                                                   account: email,
+                                                   accessGroup: KeychainConfiguration.accessGroup)
+                
+                try passwordItem.savePassword(password)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
         
         let vc = NavigationManager.shared.instantiateShowsViewController()

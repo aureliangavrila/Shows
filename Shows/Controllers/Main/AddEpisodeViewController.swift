@@ -9,7 +9,7 @@
 import UIKit
 import SkyFloatingLabelTextField
 
-class AddEpisodeViewController: UIViewController {
+class AddEpisodeViewController: BaseViewController {
     
     @IBOutlet weak var btnUploadPhoto: UIButton!
     @IBOutlet weak var txfEpisodTitle: SkyFloatingLabelTextField!
@@ -19,10 +19,13 @@ class AddEpisodeViewController: UIViewController {
     
     @IBOutlet weak var constrHeightViewUploadPhoto: NSLayoutConstraint!
     
+    // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
     }
+    
+    //MARK: - IBAction Methods
     
     @IBAction func btnCancel(_ sender: UIButton) {
     }

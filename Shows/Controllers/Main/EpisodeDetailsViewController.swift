@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EpisodeDetailsViewController: UIViewController {
+class EpisodeDetailsViewController: BaseViewController {
     
     @IBOutlet weak var imgEpisode: UIImageView!
     @IBOutlet weak var lblEpisodeName: UILabel!
@@ -17,11 +17,20 @@ class EpisodeDetailsViewController: UIViewController {
     
     @IBOutlet weak var constrHeightLblDescription: NSLayoutConstraint!
     
+    // MARK: - StatusBar Methods
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
+    
+    //MARK: - Custom Methods
+    
+    //MARK: - IBAction Methods
     
     @IBAction func btnBack(_ sender: UIButton) {
     }
