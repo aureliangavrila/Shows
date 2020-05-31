@@ -23,5 +23,40 @@ class NavigationManager {
     
     //MARK: - MAIN
     
+    func instantiateShowsViewController() -> ShowsViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "ShowsViewController") as! ShowsViewController
+        
+        return controller
+    }
+    
+    func instantiateShowDetailsViewController() -> ShowDetailsViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "ShowDetailsViewController") as! ShowDetailsViewController
+        
+        return controller
+    }
+    
+    func instantiateEpisodeDetailsViewController() -> EpisodeDetailsViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "EpisodeDetailsViewController") as! EpisodeDetailsViewController
+        
+        return controller
+    }
+    
+    func instantiateAddEpisodeViewController() -> AddEpisodeViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "AddEpisodeViewController") as! AddEpisodeViewController
+        
+        return controller
+    }
+    
+    func instantiateCommentsViewController() -> CommentsViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "CommentsViewController") as! CommentsViewController
+        
+        return controller
+    }
+    
     
 }

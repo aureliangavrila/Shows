@@ -25,6 +25,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         setupUI()
+        loadCredentials()
     }
     
     // MARK: - Custom Methods
@@ -33,7 +34,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         btnLogin.layer.cornerRadius = 5
     }
     
-    func updateUI() {
+    func enableLoginButton() {
         guard let email = txfEmail.text, let password = txfPassword.text else {
             btnLogin.isEnabled = false
             btnLogin.alpha = 0.5
@@ -50,6 +51,34 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         
         btnLogin.isEnabled = true
         btnLogin.alpha = 1
+    }
+    
+    func loadCredentials() {
+        let shouldRememberMe = UserDefaults.standard.bool(forKey: Constants.k_RememberMe)
+        
+        rememberMe = shouldRememberMe
+        imgCheckRememberMe.image = rememberMe ? UIImage(named: "icon_checkbox_filled") : UIImage(named: "icon_checkbox_empty")
+        
+        if rememberMe {
+            guard let email = UserDefaults.standard.value(forKey: Constants.k_EmailUser) as? String  else {
+                return
+            }
+            
+            do {
+                let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
+                                                        account: email,
+                                                        accessGroup: KeychainConfiguration.accessGroup)
+                
+                let keychainPassword = try passwordItem.readPassword()
+                
+                txfEmail.text = email
+                txfPassword.text = keychainPassword
+                
+            } catch {
+                print("Error reading password from keychain - \(error)")
+            }
+        }
+        
     }
     
     //MARK: - IBActions Methods
@@ -70,6 +99,27 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     @IBAction func btnLogin(_ sender: UIButton) {
+        //>>    Save credentials
+        UserDefaults.standard.set(rememberMe, forKey: Constants.k_RememberMe)
+        
+        let email = txfEmail.text!
+        let password = txfPassword.text!
+        
+        UserDefaults.standard.set(email, forKey: Constants.k_EmailUser)
+        
+        do {
+            let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
+                                                    account: email,
+                                                    accessGroup: KeychainConfiguration.accessGroup)
+            
+            try passwordItem.savePassword(password)
+        } catch {
+            print(error.localizedDescription)
+        }
+        
+        let vc = NavigationManager.shared.instantiateShowsViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+        
     }
     
     //MARK: - UITextFieldDelegate Methods
@@ -102,9 +152,35 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         textField.sendActions(for: UIControl.Event.editingChanged)
         
         //Update UI
-        updateUI()
+        enableLoginButton()
         
         return false;
     }
+    
+    @IBAction func textFieldDidChange(_ sender: SkyFloatingLabelTextField) {
+        if sender == txfEmail {
+            if let text = txfEmail.text {
+                if !UtilsCheck.checkEmail(email: text) {
+                    txfEmail.errorMessage = "Please enter a valid email addres."
+                }
+                else  {
+                    txfEmail.errorMessage = ""
+                    txfEmail.title = "EMAIL"
+                }
+            }
+        }
+        else if sender == txfPassword {
+            if let paasword = txfPassword.text {
+                if !UtilsCheck.checkPassword(password: paasword) {
+                    txfPassword.errorMessage = "Password should be at least 6 characters long."
+                }
+                else {
+                    txfPassword.errorMessage = ""
+                    txfPassword.title = "Password"
+                }
+            }
+        }
+    }
+    
     
 }

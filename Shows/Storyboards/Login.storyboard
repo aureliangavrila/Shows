@@ -65,6 +65,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
+                                    <action selector="textFieldDidChange:" destination="sWA-Q8-HiX" eventType="editingChanged" id="ren-36-Lac"/>
                                     <outlet property="delegate" destination="sWA-Q8-HiX" id="DaM-6w-Pek"/>
                                 </connections>
                             </textField>
@@ -110,6 +111,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
+                                    <action selector="textFieldDidChange:" destination="sWA-Q8-HiX" eventType="editingChanged" id="acn-uj-wB2"/>
                                     <outlet property="delegate" destination="sWA-Q8-HiX" id="FXe-X1-b2J"/>
                                 </connections>
                             </textField>
