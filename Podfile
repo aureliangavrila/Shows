@@ -6,5 +6,11 @@ target 'Shows' do
   use_frameworks!
 
 pod 'SkyFloatingLabelTextField', '~> 3.0'
+pod 'SVProgressHUD'
+
+pod 'Alamofire'
+
+pod 'SwiftyJSON', '~> 4.0'
+pod 'Kingfisher', '~> 5.0'
 
 end

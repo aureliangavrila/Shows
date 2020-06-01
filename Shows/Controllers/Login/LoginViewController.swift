@@ -8,6 +8,7 @@
 
 import UIKit
 import SkyFloatingLabelTextField
+import SVProgressHUD
 
 class LoginViewController: BaseViewController, UITextFieldDelegate {
     
@@ -111,26 +112,38 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         //>>    Save credentials
         UserDefaults.standard.set(rememberMe, forKey: Constants.k_RememberMe)
         
-        if rememberMe {
-            let email = txfEmail.text!
-            let password = txfPassword.text!
+        let email = txfEmail.text!
+        let password = txfPassword.text!
+        
+        SVProgressHUD.show()
+        
+        ShowServices.shared.getUser(email, password: password) { [weak self] succes in
+            guard let self = self else { return }
             
-            UserDefaults.standard.set(email, forKey: Constants.k_EmailUser)
-            
-            do {
-                let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
-                                                   account: email,
-                                                   accessGroup: KeychainConfiguration.accessGroup)
-                
-                try passwordItem.savePassword(password)
-            } catch {
-                print(error.localizedDescription)
+            guard succes == true else {
+                SVProgressHUD.dismiss()
+                return 
             }
+            
+            if self.rememberMe {
+                SVProgressHUD.dismiss()
+                
+                   UserDefaults.standard.set(email, forKey: Constants.k_EmailUser)
+                   
+                   do {
+                       let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
+                                                          account: email,
+                                                          accessGroup: KeychainConfiguration.accessGroup)
+                       
+                       try passwordItem.savePassword(password)
+                   } catch {
+                       print(error.localizedDescription)
+                   }
+               }
+            
+            let vc = NavigationManager.shared.instantiateShowsViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
         }
-        
-        let vc = NavigationManager.shared.instantiateShowsViewController()
-        self.navigationController?.pushViewController(vc, animated: true)
-        
     }
     
     //MARK: - UITextFieldDelegate Methods

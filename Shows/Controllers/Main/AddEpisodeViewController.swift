@@ -28,6 +28,7 @@ class AddEpisodeViewController: BaseViewController {
     //MARK: - IBAction Methods
     
     @IBAction func btnCancel(_ sender: UIButton) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func btnAdd(_ sender: UIButton) {
