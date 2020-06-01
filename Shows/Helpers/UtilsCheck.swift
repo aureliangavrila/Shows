@@ -42,4 +42,34 @@ open class UtilsCheck {
         
         return valid
     }
+    
+    class func checkFormatSeasonAndEpisode(text: String) -> (String, String)? {
+        let components = text.components(separatedBy: " ")
+        
+        guard components.count == 2 else {
+            return nil
+        }
+        
+        guard components[0].starts(with: "S") && components[1].starts(with: "E") else {
+            return nil
+        }
+        
+        let season = components[0]
+        let epsiode = components[1]
+        
+        let rangeSeson = season.index(after: season.startIndex)..<season.endIndex
+        let rangeEpisode = epsiode.index(after: epsiode.startIndex)..<epsiode.endIndex
+        
+        let seasonNr = season[rangeSeson]
+        let episodeNr = epsiode[rangeEpisode]
+        
+        let strSeasonNr = String(seasonNr)
+        let strEpisodeNr = String(episodeNr)
+        
+        guard Int(strSeasonNr) != nil && Int(strEpisodeNr) != nil else {
+            return nil
+        }
+        
+        return (strSeasonNr, strEpisodeNr)
+    }
 }

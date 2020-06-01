@@ -8,8 +8,9 @@
 
 import UIKit
 import SkyFloatingLabelTextField
+import Photos
 
-class AddEpisodeViewController: BaseViewController {
+class AddEpisodeViewController: BaseViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
     @IBOutlet weak var btnUploadPhoto: UIButton!
     @IBOutlet weak var txfEpisodTitle: SkyFloatingLabelTextField!
@@ -18,11 +19,36 @@ class AddEpisodeViewController: BaseViewController {
     @IBOutlet weak var viewUploadPhoto: UIView!
     
     @IBOutlet weak var constrHeightViewUploadPhoto: NSLayoutConstraint!
+    @IBOutlet weak var constrBottomViewUploadPhoto: NSLayoutConstraint!
+    
+    let imagePickerController = UIImagePickerController()
+    
+    var fileURL: String?
     
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupUI()
+    }
+    
+    //MARK: - Custom Methods
+    
+    func setupUI() {
+        btnUploadPhoto.imageView?.contentMode = .scaleAspectFill
+        btnUploadPhoto.layer.cornerRadius = btnUploadPhoto.frame.height / 2
+        btnUploadPhoto.layer.masksToBounds = true
+        btnUploadPhoto.clipsToBounds = true
+        
+        imagePickerController.delegate = self
+    }
+    
+    func hideChoosePhotoView() {
+        constrBottomViewUploadPhoto.constant = 247
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     //MARK: - IBAction Methods
@@ -32,19 +58,90 @@ class AddEpisodeViewController: BaseViewController {
     }
     
     @IBAction func btnAdd(_ sender: UIButton) {
-    }
-    
-    @IBAction func btnTakePhoto(_ sender: UIButton) {
-    }
-    
-    @IBAction func btnSelectPhoto(_ sender: UIButton) {
-    }
-    
-    @IBAction func btnDismissView(_ sender: UIButton) {
+//        guard self.fileURL != nil else {
+//            let alert = UtilsDisplay.okAlert(name: "Oops", message: "Photo cannot be uploaded")
+//            self.present(alert, animated: true, completion: nil)
+//
+//            return
+//        }
+        
+        
+        guard let title = txfEpisodTitle.text, title != "" else {
+            let alert = UtilsDisplay.okAlert(name: "Oops", message: "The episode title cannot be empty.")
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        guard let seasonEpisode = txfSeasonEpisod.text, seasonEpisode != "" else {
+            let alert = UtilsDisplay.okAlert(name: "Oops", message: "Season and Episode cannot be empty.")
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        guard let value = UtilsCheck.checkFormatSeasonAndEpisode(text: seasonEpisode) else {
+            let alert = UtilsDisplay.okAlert(name: "Oops", message: "Season and Episode format is not correct")
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        let description = txfDescription.text ?? ""
+        
+        ShowServices.shared.addEpisode(fileURL!, title: title, season: value.0, episode: value.1, description: description)
     }
     
     @IBAction func btnUploadPhoto(_ sender: UIButton) {
+        constrBottomViewUploadPhoto.constant = 0
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
     }
     
+    @IBAction func btnTakePhoto(_ sender: UIButton) {
+        hideChoosePhotoView()
+        
+        imagePickerController.allowsEditing = false
+        imagePickerController.sourceType = .camera
+        
+        present(imagePickerController, animated: true, completion: nil)
+    }
     
+    @IBAction func btnSelectPhoto(_ sender: UIButton) {
+        hideChoosePhotoView()
+        
+        imagePickerController.allowsEditing = false
+        imagePickerController.sourceType = .photoLibrary
+        
+        present(imagePickerController, animated: true, completion: nil)
+    }
+    
+    @IBAction func btnDismissView(_ sender: UIButton) {
+        hideChoosePhotoView()
+    }
+    
+    //MARK: - UIImagePickerControllerDelegate Methods
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.originalImage] as? UIImage else {
+            return
+        }
+        
+        if #available(iOS 11.0, *) {
+            guard let fileUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL else { return }
+            print(fileUrl.lastPathComponent)
+            self.fileURL = fileUrl.lastPathComponent
+        }
+
+        btnUploadPhoto.setImage(image, for: .normal)
+        btnUploadPhoto.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        dismiss(animated: true, completion: nil)
+    }
 }

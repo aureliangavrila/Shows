@@ -37,6 +37,7 @@
 		049434862484C3C400DD20A5 /* Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049434852484C3C400DD20A5 /* Show.swift */; };
 		0494348B2484FCBD00DD20A5 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0494348A2484FCBD00DD20A5 /* Episode.swift */; };
 		0494348D24850B6700DD20A5 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0494348C24850B6700DD20A5 /* Comment.swift */; };
+		04A62CAD24856F9B009D87B3 /* UtilsDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A62CAC24856F9B009D87B3 /* UtilsDisplay.swift */; };
 		CC67BB320CE862FF236D504F /* Pods_Shows.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D437BEBF292D762C50B880B /* Pods_Shows.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		049434852484C3C400DD20A5 /* Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Show.swift; sourceTree = "<group>"; };
 		0494348A2484FCBD00DD20A5 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		0494348C24850B6700DD20A5 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		04A62CAC24856F9B009D87B3 /* UtilsDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsDisplay.swift; sourceTree = "<group>"; };
 		37FC9807AC9D493B50019538 /* Pods-Shows.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shows.debug.xcconfig"; path = "Target Support Files/Pods-Shows/Pods-Shows.debug.xcconfig"; sourceTree = "<group>"; };
 		6D437BEBF292D762C50B880B /* Pods_Shows.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shows.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9085C6C2CD9129B09E7EE284 /* Pods-Shows.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shows.release.xcconfig"; path = "Target Support Files/Pods-Shows/Pods-Shows.release.xcconfig"; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 			children = (
 				045DCFAF2483041000C18044 /* UtilsCheck.swift */,
 				045DCFC82483E1A300C18044 /* Constants.swift */,
+				04A62CAC24856F9B009D87B3 /* UtilsDisplay.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -382,6 +385,7 @@
 				045DCFAD2482FB2900C18044 /* NavigationManager.swift in Sources */,
 				045DCFA32482E8AF00C18044 /* BaseViewController.swift in Sources */,
 				045DCF8A2482E0B900C18044 /* AppDelegate.swift in Sources */,
+				04A62CAD24856F9B009D87B3 /* UtilsDisplay.swift in Sources */,
 				045DCFD024840D3600C18044 /* ShowsService.swift in Sources */,
 				045DCF8C2482E0B900C18044 /* SceneDelegate.swift in Sources */,
 				045DCFCE248405BC00C18044 /* ShowsAPIRouter.swift in Sources */,

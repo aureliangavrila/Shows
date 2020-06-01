@@ -23,8 +23,8 @@
                         <color key="textColor" red="0.93725490199999995" green="0.49019607840000001" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The office 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Acm-gw-5Cl">
-                        <rect key="frame" x="87" y="18" width="85" height="20"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="The office 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Acm-gw-5Cl">
+                        <rect key="frame" x="87" y="18" width="270" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -38,11 +38,13 @@
                     </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Acm-gw-5Cl" secondAttribute="bottom" constant="18" id="Ij6-VE-34a"/>
                     <constraint firstItem="xt5-si-SRs" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="LoN-ly-TkZ"/>
                     <constraint firstAttribute="trailing" secondItem="iSO-Nf-LaE" secondAttribute="trailing" constant="20" id="M8Z-m1-UFn"/>
+                    <constraint firstItem="Acm-gw-5Cl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="18" id="OSS-RE-eLM"/>
                     <constraint firstItem="iSO-Nf-LaE" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="SZs-sA-V7s"/>
-                    <constraint firstItem="Acm-gw-5Cl" firstAttribute="centerY" secondItem="xt5-si-SRs" secondAttribute="centerY" id="dtX-NS-TKx"/>
-                    <constraint firstItem="Acm-gw-5Cl" firstAttribute="leading" secondItem="xt5-si-SRs" secondAttribute="trailing" constant="12" id="frC-0a-ILD"/>
+                    <constraint firstItem="Acm-gw-5Cl" firstAttribute="leading" secondItem="xt5-si-SRs" secondAttribute="trailing" constant="12" id="V3i-Ha-vTt"/>
+                    <constraint firstItem="iSO-Nf-LaE" firstAttribute="leading" secondItem="Acm-gw-5Cl" secondAttribute="trailing" constant="8" id="jLX-6M-D1S"/>
                     <constraint firstItem="xt5-si-SRs" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="rEH-NX-sUC"/>
                 </constraints>
             </tableViewCellContentView>

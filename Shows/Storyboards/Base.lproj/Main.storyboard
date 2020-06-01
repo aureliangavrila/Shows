@@ -199,6 +199,12 @@
                                     <action selector="btnAddNewEpisode:" destination="xS6-Df-5Il" eventType="touchUpInside" id="ZtY-gl-jKz"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_shadow" translatesAutoresizingMaskIntoConstraints="NO" id="lqf-Pv-tiD">
+                                <rect key="frame" x="0.0" y="276" width="375" height="84"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="84" id="sxZ-l4-hlm"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -217,10 +223,13 @@
                             <constraint firstItem="TnG-mu-OkC" firstAttribute="trailing" secondItem="SL0-pw-3Rx" secondAttribute="trailing" constant="24" id="d4Z-ku-uvG"/>
                             <constraint firstItem="tIq-f8-XbC" firstAttribute="leading" secondItem="TnG-mu-OkC" secondAttribute="leading" constant="16" id="fXp-fn-5YA"/>
                             <constraint firstItem="OAm-n2-ZmL" firstAttribute="top" secondItem="SL0-pw-3Rx" secondAttribute="bottom" constant="20" id="iGc-XB-ecN"/>
+                            <constraint firstItem="lqf-Pv-tiD" firstAttribute="leading" secondItem="TnG-mu-OkC" secondAttribute="leading" id="ifl-wX-0iH"/>
                             <constraint firstItem="TnG-mu-OkC" firstAttribute="trailing" secondItem="bDy-1Z-Yfx" secondAttribute="trailing" constant="24" id="j9U-Sq-rhr"/>
                             <constraint firstItem="tIq-f8-XbC" firstAttribute="top" secondItem="TnG-mu-OkC" secondAttribute="top" constant="10" id="kmk-fM-pur"/>
                             <constraint firstItem="P6v-yM-N4h" firstAttribute="top" secondItem="KFt-u4-v5i" secondAttribute="bottom" constant="15" id="ky9-PP-km2"/>
                             <constraint firstItem="TnG-mu-OkC" firstAttribute="trailing" secondItem="OAm-n2-ZmL" secondAttribute="trailing" id="lUk-gK-R41"/>
+                            <constraint firstItem="XeQ-DL-aSL" firstAttribute="top" secondItem="lqf-Pv-tiD" secondAttribute="bottom" id="roh-2V-K2u"/>
+                            <constraint firstItem="lqf-Pv-tiD" firstAttribute="trailing" secondItem="TnG-mu-OkC" secondAttribute="trailing" id="u4L-IZ-4fI"/>
                             <constraint firstItem="SL0-pw-3Rx" firstAttribute="top" secondItem="P6v-yM-N4h" secondAttribute="bottom" constant="15" id="ve7-oV-Xsw"/>
                             <constraint firstItem="OAm-n2-ZmL" firstAttribute="leading" secondItem="TnG-mu-OkC" secondAttribute="leading" id="xPo-DP-qF0"/>
                             <constraint firstItem="XeQ-DL-aSL" firstAttribute="leading" secondItem="TnG-mu-OkC" secondAttribute="leading" id="xnv-MD-08Q"/>
@@ -254,6 +263,13 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="360" id="Fde-RA-Zek"/>
                                     <constraint firstAttribute="width" secondItem="Rfp-1V-ICC" secondAttribute="height" multiplier="25:24" id="wkF-cL-QuW"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_shadow" translatesAutoresizingMaskIntoConstraints="NO" id="iQy-Fg-OK8">
+                                <rect key="frame" x="0.0" y="276" width="375" height="84"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="84" id="ybq-35-57x"/>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R83-eJ-YOq">
@@ -323,10 +339,13 @@
                             <constraint firstItem="LEg-4n-mLp" firstAttribute="top" secondItem="MFM-dX-SDA" secondAttribute="bottom" constant="8" id="7bF-zP-1Rb"/>
                             <constraint firstItem="Rfp-1V-ICC" firstAttribute="leading" secondItem="NlA-uI-87n" secondAttribute="leading" id="9Jv-0F-b55"/>
                             <constraint firstAttribute="trailing" secondItem="5HS-NS-Ftx" secondAttribute="trailing" id="9Xl-uu-l24"/>
+                            <constraint firstItem="iQy-Fg-OK8" firstAttribute="leading" secondItem="5HS-NS-Ftx" secondAttribute="leading" id="L1T-nE-IzA"/>
                             <constraint firstItem="NlA-uI-87n" firstAttribute="trailing" secondItem="gvZ-OK-Ucj" secondAttribute="trailing" constant="24" id="Rh6-Wz-LMi"/>
                             <constraint firstItem="gvZ-OK-Ucj" firstAttribute="top" secondItem="Rfp-1V-ICC" secondAttribute="bottom" constant="1" id="VLm-t7-AYL"/>
                             <constraint firstItem="MFM-dX-SDA" firstAttribute="leading" secondItem="NlA-uI-87n" secondAttribute="leading" constant="24" id="Vrn-fY-4E7"/>
                             <constraint firstItem="Rfp-1V-ICC" firstAttribute="top" secondItem="YmV-0r-NpF" secondAttribute="top" id="aB9-v0-HRx"/>
+                            <constraint firstItem="iQy-Fg-OK8" firstAttribute="width" secondItem="Rfp-1V-ICC" secondAttribute="width" id="aac-cJ-JoK"/>
+                            <constraint firstItem="iQy-Fg-OK8" firstAttribute="bottom" secondItem="Rfp-1V-ICC" secondAttribute="bottom" id="h2t-7j-7Cn"/>
                             <constraint firstItem="W0R-fy-zb1" firstAttribute="leading" secondItem="NlA-uI-87n" secondAttribute="leading" constant="24" id="hJi-cj-eID"/>
                             <constraint firstItem="5HS-NS-Ftx" firstAttribute="top" secondItem="Rfp-1V-ICC" secondAttribute="bottom" constant="1" id="iPD-Bz-q8m"/>
                             <constraint firstItem="LEg-4n-mLp" firstAttribute="leading" secondItem="NlA-uI-87n" secondAttribute="leading" constant="24" id="izj-Zc-eck"/>
@@ -558,6 +577,7 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0aB-8v-9uC">
                                 <rect key="frame" x="125" y="80" width="125" height="125"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="125" id="Oya-Zl-XTI"/>
                                     <constraint firstAttribute="width" constant="125" id="cVb-W0-zdM"/>
@@ -577,7 +597,7 @@
                                     <constraint firstAttribute="height" constant="60" id="ILZ-xs-Gjn"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
                                         <real key="value" value="1"/>
@@ -619,7 +639,7 @@
                                     <constraint firstAttribute="height" constant="60" id="1BH-Vl-tMg"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
                                         <real key="value" value="1"/>
@@ -648,7 +668,7 @@
                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedLineColor">
                                         <color key="value" red="0.93725490199999995" green="0.49019607840000001" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Season &amp; episode"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Season &amp; episode (&quot;S1 E1&quot;)"/>
                                     <userDefinedRuntimeAttribute type="string" keyPath="title" value="Season &amp; episode"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedTitleColor">
                                         <color key="value" red="0.62745098040000002" green="0.62745098040000002" blue="0.62745098040000002" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -661,7 +681,7 @@
                                     <constraint firstAttribute="height" constant="60" id="6H0-kc-sG1"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="lineHeight">
                                         <real key="value" value="1"/>
@@ -825,6 +845,7 @@
                     </view>
                     <connections>
                         <outlet property="btnUploadPhoto" destination="0aB-8v-9uC" id="K50-ow-oVa"/>
+                        <outlet property="constrBottomViewUploadPhoto" destination="mVm-Da-1pr" id="Lsg-Fy-h1Q"/>
                         <outlet property="constrHeightViewUploadPhoto" destination="pkZ-80-EdY" id="sXE-i5-SqW"/>
                         <outlet property="txfDescription" destination="O0I-FU-TFo" id="qe0-My-C1V"/>
                         <outlet property="txfEpisodTitle" destination="UEg-gR-Ukn" id="KMV-1D-sC4"/>
@@ -863,5 +884,6 @@
         <image name="icon_plus" width="68" height="74"/>
         <image name="img-logo" width="134" height="149"/>
         <image name="img-no-comments" width="107" height="102"/>
+        <image name="img_shadow" width="375" height="84"/>
     </resources>
 </document>

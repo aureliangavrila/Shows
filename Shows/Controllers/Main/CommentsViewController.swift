@@ -105,14 +105,7 @@ class CommentsViewController: BaseViewController {
             return
         }
         
-        ShowServices.shared.postCommentForEpisode(currEpisode, cooment: comment) { (comment, error) in
-            
-            self.txfComment.text = ""
-            self.arrComments.insert(comment!, at: 0)
-            self.tblComments.beginUpdates()
-            self.tblComments.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
-            self.tblComments.endUpdates()
-        }
+        postComment(comment)
     }
     
     //MARK: - API Methods
@@ -136,6 +129,19 @@ class CommentsViewController: BaseViewController {
             self.viewNoComments.isHidden = true
         }
     }
+    
+    func postComment(_ comment: String) {
+        ShowServices.shared.postCommentForEpisode(currEpisode, cooment: comment) {[weak self] (comment, error) in
+            guard let self = self else { return }
+            
+            self.txfComment.text = ""
+            self.arrComments.insert(comment!, at: 0)
+            self.tblComments.beginUpdates()
+            self.tblComments.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
+            self.tblComments.endUpdates()
+        }
+    }
+    
 
 }
 

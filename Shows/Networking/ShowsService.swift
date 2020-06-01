@@ -198,4 +198,24 @@ class ShowServices {
         }
     }
     
+    func addEpisode(_ fileUrl: String, title: String, season: String, episode: String, description: String) {
+        headers["Authorization"] = authToken
+        
+        AF.request(baseURL + "/api/media",
+                   method: .post,
+                   parameters: ["file" :"\(fileUrl);type=image/jpeg"],
+                   encoding: JSONEncoding.default,
+                   headers: headers)
+            .validate()
+            .responseJSON { (response) in
+                switch response.result {
+                case .success(let data):
+                    print(data)
+                    
+                case .failure(let afError):
+                    print(afError.localizedDescription)
+                }
+        }
+    }
+    
 }

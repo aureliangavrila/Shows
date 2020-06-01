@@ -7,48 +7,48 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FED1FAD9-553C-4C75-8C1D-EF0ED97BD315"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Shows/Controllers/Main/CommentsViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "keyboardWillShow(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3DEBAA72-DB46-4717-A5D7-E4DA70554646"
+            uuid = "E58ADE72-6AC6-4056-B5D4-96CF632554DD"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Shows/Controllers/Main/CommentsViewController.swift"
+            filePath = "Shows/Controllers/Main/AddEpisodeViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
-            landmarkName = "keyboardWillShow(_:)"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5F612A5F-AA20-4059-AC2F-C2CD22F61A49"
+            uuid = "4EEA2278-2D6A-4C06-9F71-6427FD046E88"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Shows/Controllers/Main/CommentsViewController.swift"
+            filePath = "Shows/Networking/ShowsService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
-            landmarkName = "keyboardWillShow(_:)"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "addEpisode(_:title:season:episode:description:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "ADC6106F-1A92-465E-A3DB-B36A54D0979E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shows/Networking/ShowsService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "216"
+            endingLineNumber = "216"
+            landmarkName = "addEpisode(_:title:season:episode:description:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
