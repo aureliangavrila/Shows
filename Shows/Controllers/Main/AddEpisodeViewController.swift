@@ -23,7 +23,8 @@ class AddEpisodeViewController: BaseViewController, UIImagePickerControllerDeleg
     
     let imagePickerController = UIImagePickerController()
     
-    var fileURL: String?
+    var selectedImage: UIImage?
+    var showId: String!
     
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
@@ -58,13 +59,12 @@ class AddEpisodeViewController: BaseViewController, UIImagePickerControllerDeleg
     }
     
     @IBAction func btnAdd(_ sender: UIButton) {
-//        guard self.fileURL != nil else {
-//            let alert = UtilsDisplay.okAlert(name: "Oops", message: "Photo cannot be uploaded")
-//            self.present(alert, animated: true, completion: nil)
-//
-//            return
-//        }
-        
+        guard let image = self.selectedImage else {
+            let alert = UtilsDisplay.okAlert(name: "Oops", message: "Please select a photo to upload.")
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
         
         guard let title = txfEpisodTitle.text, title != "" else {
             let alert = UtilsDisplay.okAlert(name: "Oops", message: "The episode title cannot be empty.")
@@ -89,7 +89,7 @@ class AddEpisodeViewController: BaseViewController, UIImagePickerControllerDeleg
         
         let description = txfDescription.text ?? ""
         
-        ShowServices.shared.addEpisode(fileURL!, title: title, season: value.0, episode: value.1, description: description)
+        ShowServices.shared.addEpisode(image, showId: self.showId, title: title, season: value.0, episode: value.1, description: description)
     }
     
     @IBAction func btnUploadPhoto(_ sender: UIButton) {
@@ -132,13 +132,8 @@ class AddEpisodeViewController: BaseViewController, UIImagePickerControllerDeleg
         guard let image = info[.originalImage] as? UIImage else {
             return
         }
-        
-        if #available(iOS 11.0, *) {
-            guard let fileUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL else { return }
-            print(fileUrl.lastPathComponent)
-            self.fileURL = fileUrl.lastPathComponent
-        }
 
+        selectedImage = image
         btnUploadPhoto.setImage(image, for: .normal)
         btnUploadPhoto.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         

@@ -119,7 +119,7 @@ class CommentsViewController: BaseViewController {
                 return
             }
             
-            guard let arrayComments = comments else {
+            guard let arrayComments = comments, arrayComments.count > 0 else {
                 self.viewNoComments.isHidden = false
                 return
             }

@@ -94,6 +94,7 @@ class ShowDetailsViewController: BaseViewController {
     
     @IBAction func btnAddNewEpisode(_ sender: UIButton) {
         let vc = NavigationManager.shared.instantiateAddEpisodeViewController()
+        vc.showId = currShow.id
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

@@ -59,7 +59,7 @@ class ShowServices {
                 
                     switch response.result {
                     case .success(let data):
-                        
+                    
                         var arrTempShows = [Show]()
                         if let dataJSON = data as? [String : AnyObject] {
                             if let arrayJSON = dataJSON["data"] as? [[String : AnyObject]] {
@@ -121,6 +121,7 @@ class ShowServices {
                 switch response.result {
                 case .success(let data):
                     
+                    print(data)
                     var arrTempEpisodes = [Episode]()
                     if let dataJSON = data as? [String : AnyObject] {
                         if let arrayJSON = dataJSON["data"] as? [[String : AnyObject]] {
@@ -169,7 +170,6 @@ class ShowServices {
         }
     }
     
-    
     func postCommentForEpisode(_ episode: Episode, cooment: String,completion: @escaping (_ shows: Comment?, _ error: Error?) -> Void) {
         headers["Authorization"] = authToken
         
@@ -198,12 +198,64 @@ class ShowServices {
         }
     }
     
-    func addEpisode(_ fileUrl: String, title: String, season: String, episode: String, description: String) {
+    func addEpisode(_ image: UIImage, showId: String, title: String, season: String, episode: String, description: String) {
+        
+        let headers: HTTPHeaders = ["Content-type" : "multipart/form-data",
+                                    "Content-Disposition" : "form-data",
+                                    "Authorization" : authToken]
+        
+        let parameters: [String : AnyObject] = ["file": image]
+        
+        
+       let uploadRequst =  AF.upload(multipartFormData: { (multipartFormData) in
+            for (key, value) in parameters {
+                multipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
+            }
+
+            guard let imageData = image.jpegData(compressionQuality: 1.0) else { return }
+            multipartFormData.append(imageData, withName: "file", fileName: "file.jpg", mimeType: "image/jpeg")
+
+        }, to:baseURL + "/api/media",
+           method: .post,
+           headers: headers)
+        
+        uploadRequst.responseJSON { (response) in
+            switch response.result {
+            case .success(let data):
+                print(data)
+                guard let dataJSON = data as? [String : AnyObject] else {
+                    return
+                }
+                
+                guard let json = dataJSON["data"] as? [String : AnyObject] else {
+                    return
+                }
+                
+                guard let mediaId = json["_id"] as? String else {
+                    return
+                }
+                
+                self.createEpisode(showId, title: title, season: season, episode: episode, description: description, mediaId: mediaId)
+                
+            case.failure(let aferror):
+                print(aferror.localizedDescription)
+            }
+        }
+    }
+    
+    func createEpisode(_ showId: String, title: String, season: String, episode: String, description: String, mediaId: String) {
         headers["Authorization"] = authToken
         
-        AF.request(baseURL + "/api/media",
+        let parameters = ["showId" : showId,
+                          "mediaId" : mediaId,
+                          "title" : title,
+                          "description" : description,
+                          "episodeNumber" : episode,
+                          "season" : season]
+        
+        AF.request(baseURL + "/api/episodes",
                    method: .post,
-                   parameters: ["file" :"\(fileUrl);type=image/jpeg"],
+                   parameters: parameters,
                    encoding: JSONEncoding.default,
                    headers: headers)
             .validate()
@@ -217,5 +269,68 @@ class ShowServices {
                 }
         }
     }
+    
+//    func imagupload(){
+//        let upload_file = image
+//
+//        var parameters = [String:AnyObject]()
+//        parameters = ["file": upload_file] as [String : AnyObject]
+//
+//        let URL = "myURL"
+//
+//
+//        requestWith(endUrl: URL, imageData: image.jpegData(compressionQuality: 1.0), parameters: parameters, onCompletion: { (json) in
+//            print(json)
+//
+//        }) { (error) in
+//            print(error)
+//
+//        }
+//    }
+
+
+//      func requestWith(endUrl: String, imagedata: Data?, parameters: [String : String], onCompletion: ((JSON?) -> Void)? = nil, onError: ((Error?) -> Void)? = nil){
+//
+//        let url = endUrl
+//
+//
+//        let headers: HTTPHeaders = [
+//
+//            "Content-type": "multipart/form-data"
+//        ]
+//
+//        AF.upload(multipartFormData: { (multipartFormData) in
+//            for (key, value) in parameters {
+//                multipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
+//            }
+//
+//            if let data = imagedata{
+//                multipartFormData.append(data, withName: "imagename", fileName: "imagename.jpg", mimeType: "image/jpeg")
+//            }
+//
+//        }, to:url,headers: headers)
+//        { (result) in
+//            switch result {
+//            case .success(let upload, _, _):
+//                upload.responseJSON { response in
+//                    let json : JSON = JSON(response.result.value)
+//                     print(json)
+//                    if let err = response.error{
+//                        onError?(err)
+//
+//                        return
+//                    }
+//                    onCompletion?(json)
+//
+//                }
+//            case .failure(let error):
+//               //print("Error in upload: \(error.localizedDescription)")
+//                onError?(error)
+//
+//            }
+//
+//        }
+//
+//    }
     
 }
