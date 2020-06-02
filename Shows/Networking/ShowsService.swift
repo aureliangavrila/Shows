@@ -17,7 +17,7 @@ class ShowServices {
     var headers: HTTPHeaders = ["Accept": "application/json",
                                 "Content-Type" : "application/json"]
     
-    let baseURL = "https://api.infinum.academy"
+    let baseURL = Constants.baseURL
     
     private func start(_ path: String, method: HTTPMethod, paramters: [String : String]?, headers: HTTPHeaders, completion: @escaping (AFDataResponse<Any>) -> Void) {
         AF.request(baseURL + path,

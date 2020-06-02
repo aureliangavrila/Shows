@@ -11,6 +11,8 @@ import Foundation
 
 struct Constants {
     
+    static let baseURL = "https://api.infinum.academy"
+    
     static let k_RememberMe = "keyRememberMe"
     
     static let k_EmailUser = "keyEmailUser"

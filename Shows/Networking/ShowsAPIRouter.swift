@@ -16,7 +16,7 @@ enum SAPIRouter {
 
 extension SAPIRouter {
     public var baseURL: URL {
-        return URL(string: "https://api.infinum.academy/api")!
+        return URL(string: "https://api.infinum.academy")!
     }
     
     var method: Alamofire.HTTPMethod {
@@ -30,7 +30,7 @@ extension SAPIRouter {
     var path: String {
         switch self {
         case .login:
-            return "/users/sessions"
+            return "/api/users/sessions"
         }
     }
     

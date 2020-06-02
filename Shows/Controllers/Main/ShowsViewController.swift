@@ -95,7 +95,7 @@ extension ShowsViewController: UITableViewDataSource, UITableViewDelegate {
         let show = arrShows[indexPath.row]
         
         cell.lblNameShow.text = show.title
-        cell.imgShow.kf.setImage(with: URL(string: "https://api.infinum.academy" + show.imageUrl)!)
+        cell.imgShow.kf.setImage(with: URL(string: Constants.baseURL + show.imageUrl)!)
         
         return cell
     }

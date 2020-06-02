@@ -10,6 +10,8 @@ import UIKit
 
 class EpisodeDetailsViewController: BaseViewController, UIScrollViewDelegate {
     
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var imgEpisode: UIImageView!
     @IBOutlet weak var lblEpisodeName: UILabel!
     @IBOutlet weak var lblSeasonEpisode: UILabel!
@@ -29,11 +31,14 @@ class EpisodeDetailsViewController: BaseViewController, UIScrollViewDelegate {
         super.viewDidLoad()
 
         updateUI(episode: currEpisode)
+        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+//        scrollView.contentSize = contentView.bounds.size
+    
     }
     
     //MARK: - Custom Methods
@@ -44,7 +49,7 @@ class EpisodeDetailsViewController: BaseViewController, UIScrollViewDelegate {
         lblEpisodeDescription.text = episode.description
         constrHeightLblDescription.constant = episode.description.stringHeight(limit: self.lblEpisodeDescription.frame.width , and: self.lblEpisodeDescription.font)
         
-        imgEpisode.kf.setImage(with:  URL(string: "https://api.infinum.academy" + episode.imageUrl)!)
+        imgEpisode.kf.setImage(with:  URL(string: Constants.baseURL + episode.imageUrl)!)
     }
     
     //MARK: - IBAction Methods

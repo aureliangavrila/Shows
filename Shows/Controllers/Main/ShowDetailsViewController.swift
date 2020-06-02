@@ -20,7 +20,6 @@ class ShowDetailsViewController: BaseViewController {
     
     @IBOutlet weak var constrHeighTxtDescription: NSLayoutConstraint!
     
-    
     var currShow: Show!
     var arrEpisodes = [Episode]()
     
@@ -43,7 +42,7 @@ class ShowDetailsViewController: BaseViewController {
     
     func updateUI(show: Show) {
         lblShowName.text = show.title
-        imgShow.kf.setImage(with: URL(string: "https://api.infinum.academy" + show.imageUrl)!)
+        imgShow.kf.setImage(with: URL(string: Constants.baseURL + show.imageUrl)!)
         
         let description = show.description ?? ""
         lblDescription.text = description
