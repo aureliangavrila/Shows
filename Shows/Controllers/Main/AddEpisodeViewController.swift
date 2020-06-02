@@ -8,7 +8,11 @@
 
 import UIKit
 import SkyFloatingLabelTextField
-import Photos
+import SVProgressHUD
+
+protocol AddNewEpisodeDelegate {
+    func newEpisodeCreated()
+}
 
 class AddEpisodeViewController: BaseViewController {
     
@@ -20,17 +24,27 @@ class AddEpisodeViewController: BaseViewController {
     
     @IBOutlet weak var constrHeightViewUploadPhoto: NSLayoutConstraint!
     @IBOutlet weak var constrBottomViewUploadPhoto: NSLayoutConstraint!
+    @IBOutlet weak var constrTopBtnUploadPhoto: NSLayoutConstraint!
     
     let imagePickerController = UIImagePickerController()
     
     var selectedImage: UIImage?
     var showId: String!
     
+    var delegate: AddNewEpisodeDelegate?
+    
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupUI()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     //MARK: - Custom Methods
@@ -43,12 +57,37 @@ class AddEpisodeViewController: BaseViewController {
         
         imagePickerController.delegate = self
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewEndEditing))
         self.view.addGestureRecognizer(tapGesture)
     }
     
     @objc func viewEndEditing() {
         self.view.endEditing(true)
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        
+        if UIDevice.current.screenType == .iPhones_5_5s_5c_SE {
+            constrTopBtnUploadPhoto.constant -= (constrTopBtnUploadPhoto.constant + btnUploadPhoto.frame.height / 2)
+        }
+        else if UIDevice.current.screenType == .iPhones_6_6s_7_8  {
+            constrTopBtnUploadPhoto.constant = 0
+        }
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        constrTopBtnUploadPhoto.constant = 33
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     func hideChoosePhotoView() {
@@ -96,7 +135,27 @@ class AddEpisodeViewController: BaseViewController {
         
         let description = txfDescription.text ?? ""
         
-        ShowServices.shared.addEpisode(image, showId: self.showId, title: title, season: value.0, episode: value.1, description: description)
+        SVProgressHUD.show()
+        
+        ShowServices.shared.addEpisode(image, showId: self.showId, title: title, season: value.0, episode: value.1, description: description) {[weak self] (success, error) in
+            guard let self = self else { return }
+            
+            SVProgressHUD.dismiss()
+            
+            guard error == nil else {
+                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
+                
+                return 
+            }
+            
+            guard success == true else {
+                return
+            }
+            
+            self.delegate?.newEpisodeCreated()
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     
     @IBAction func btnUploadPhoto(_ sender: UIButton) {

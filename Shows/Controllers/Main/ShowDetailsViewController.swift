@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class ShowDetailsViewController: BaseViewController {
     
@@ -56,6 +57,9 @@ class ShowDetailsViewController: BaseViewController {
             guard let self = self else { return }
             
             guard error == nil else {
+                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
+                
                 return
             }
             
@@ -65,12 +69,20 @@ class ShowDetailsViewController: BaseViewController {
     }
     
     func getShowEpisodes() {
+        SVProgressHUD.show()
+        
         ShowServices.shared.getShowEpisodes(currShow) {[weak self] (arrEpisodes, error) in
             guard let self = self else { return }
             
+            SVProgressHUD.dismiss()
+            
             guard error == nil else {
+                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
+                
                 self.lblCountEpisodes.text = "0"
                 self.tblEpisodes.isHidden = true
+                
                 return
             }
             
@@ -83,7 +95,6 @@ class ShowDetailsViewController: BaseViewController {
             self.lblCountEpisodes.text = "\(episodes.count)"
             self.arrEpisodes = episodes
             self.tblEpisodes.reloadData()
-            
         }
     }
     
@@ -96,13 +107,14 @@ class ShowDetailsViewController: BaseViewController {
     @IBAction func btnAddNewEpisode(_ sender: UIButton) {
         let vc = NavigationManager.shared.instantiateAddEpisodeViewController()
         vc.showId = currShow.id
+        vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
 }
 
-extension ShowDetailsViewController: UITableViewDataSource, UITableViewDelegate {
+extension ShowDetailsViewController: UITableViewDataSource, UITableViewDelegate, AddNewEpisodeDelegate {
     
     //MARK: - UITableViewDataSource
     
@@ -134,5 +146,11 @@ extension ShowDetailsViewController: UITableViewDataSource, UITableViewDelegate 
         let vc = NavigationManager.shared.instantiateEpisodeDetailsViewController()
         vc.currEpisode = arrEpisodes[indexPath.row]
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    //MARK: - AddNewEpisodeDelegate Methods
+    
+    func newEpisodeCreated() {
+        self.getShowEpisodes()
     }
 }

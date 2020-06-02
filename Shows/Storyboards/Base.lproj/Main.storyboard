@@ -541,40 +541,55 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Episode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="za2-w9-PVI">
-                                <rect key="frame" x="136.5" y="18" width="102" height="22"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <color key="textColor" red="0.23529411759999999" green="0.26274509800000001" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gy8-lf-XaO">
-                                <rect key="frame" x="13" y="11" width="56" height="36"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p1j-Ig-O9x">
+                                <rect key="frame" x="13" y="11" width="349" height="36"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gy8-lf-XaO">
+                                        <rect key="frame" x="0.0" y="0.0" width="56" height="36"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="36" id="69Z-aO-EFS"/>
+                                            <constraint firstAttribute="width" constant="56" id="oMQ-KP-OOW"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" red="0.93725490199999995" green="0.49019607840000001" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="btnCancel:" destination="Poy-Zi-n6U" eventType="touchUpInside" id="NhH-qw-v7J"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Suf-oT-H3M">
+                                        <rect key="frame" x="293" y="0.0" width="56" height="36"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="36" id="5r4-JC-jiN"/>
+                                            <constraint firstAttribute="width" constant="56" id="VMj-ap-sOU"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Add">
+                                            <color key="titleColor" red="0.93725490199999995" green="0.49019607840000001" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="btnAdd:" destination="Poy-Zi-n6U" eventType="touchUpInside" id="HyQ-6H-6H6"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Episode" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="za2-w9-PVI">
+                                        <rect key="frame" x="123.5" y="7" width="102" height="22"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <color key="textColor" red="0.23529411759999999" green="0.26274509800000001" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="36" id="69Z-aO-EFS"/>
-                                    <constraint firstAttribute="width" constant="56" id="oMQ-KP-OOW"/>
+                                    <constraint firstAttribute="trailing" secondItem="Suf-oT-H3M" secondAttribute="trailing" id="16I-r6-l4q"/>
+                                    <constraint firstAttribute="height" constant="36" id="Onn-b9-7MW"/>
+                                    <constraint firstItem="Gy8-lf-XaO" firstAttribute="top" secondItem="p1j-Ig-O9x" secondAttribute="top" id="WIx-Tb-xgm"/>
+                                    <constraint firstItem="Suf-oT-H3M" firstAttribute="top" secondItem="p1j-Ig-O9x" secondAttribute="top" id="fcJ-w2-qBk"/>
+                                    <constraint firstItem="za2-w9-PVI" firstAttribute="centerX" secondItem="p1j-Ig-O9x" secondAttribute="centerX" id="r2N-Bj-GLf"/>
+                                    <constraint firstItem="Gy8-lf-XaO" firstAttribute="leading" secondItem="p1j-Ig-O9x" secondAttribute="leading" id="yKK-0X-LIp"/>
+                                    <constraint firstItem="za2-w9-PVI" firstAttribute="top" secondItem="p1j-Ig-O9x" secondAttribute="top" constant="7" id="zWM-NW-sVL"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Cancel">
-                                    <color key="titleColor" red="0.93725490199999995" green="0.49019607840000001" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="btnCancel:" destination="Poy-Zi-n6U" eventType="touchUpInside" id="NhH-qw-v7J"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Suf-oT-H3M">
-                                <rect key="frame" x="306" y="11" width="56" height="36"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="36" id="5r4-JC-jiN"/>
-                                    <constraint firstAttribute="width" constant="56" id="VMj-ap-sOU"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <state key="normal" title="Add">
-                                    <color key="titleColor" red="0.93725490199999995" green="0.49019607840000001" blue="0.5568627451" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="btnAdd:" destination="Poy-Zi-n6U" eventType="touchUpInside" id="HyQ-6H-6H6"/>
-                                </connections>
-                            </button>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0aB-8v-9uC">
                                 <rect key="frame" x="125" y="80" width="125" height="125"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -832,22 +847,19 @@
                             <constraint firstItem="Jwm-cK-Gnn" firstAttribute="trailing" secondItem="fdC-2S-wYC" secondAttribute="trailing" id="1Wr-rI-Omh"/>
                             <constraint firstItem="fdC-2S-wYC" firstAttribute="trailing" secondItem="O0I-FU-TFo" secondAttribute="trailing" constant="10" id="3Lp-Du-E8c"/>
                             <constraint firstItem="O0I-FU-TFo" firstAttribute="leading" secondItem="fdC-2S-wYC" secondAttribute="leading" constant="10" id="72N-xe-90Y"/>
-                            <constraint firstItem="Suf-oT-H3M" firstAttribute="centerY" secondItem="za2-w9-PVI" secondAttribute="centerY" id="9qZ-eb-Vix"/>
                             <constraint firstItem="fdC-2S-wYC" firstAttribute="trailing" secondItem="3qR-iX-PjC" secondAttribute="trailing" constant="10" id="BGP-GX-LZy"/>
-                            <constraint firstItem="Gy8-lf-XaO" firstAttribute="leading" secondItem="fdC-2S-wYC" secondAttribute="leading" constant="13" id="ENb-z9-X95"/>
+                            <constraint firstItem="p1j-Ig-O9x" firstAttribute="leading" secondItem="fdC-2S-wYC" secondAttribute="leading" constant="13" id="FBh-6l-mkb"/>
                             <constraint firstItem="Jwm-cK-Gnn" firstAttribute="leading" secondItem="fdC-2S-wYC" secondAttribute="leading" id="Gv9-sZ-Qeu"/>
                             <constraint firstItem="0aB-8v-9uC" firstAttribute="centerX" secondItem="UpX-hy-zVV" secondAttribute="centerX" id="HeB-ZV-SK4"/>
                             <constraint firstItem="fdC-2S-wYC" firstAttribute="trailing" secondItem="UEg-gR-Ukn" secondAttribute="trailing" constant="10" id="HeQ-Ql-GPo"/>
-                            <constraint firstItem="fdC-2S-wYC" firstAttribute="trailing" secondItem="Suf-oT-H3M" secondAttribute="trailing" constant="13" id="Mub-mi-KB2"/>
                             <constraint firstItem="UEg-gR-Ukn" firstAttribute="top" secondItem="0aB-8v-9uC" secondAttribute="bottom" constant="15" id="NrS-tQ-epo"/>
                             <constraint firstItem="3qR-iX-PjC" firstAttribute="top" secondItem="UEg-gR-Ukn" secondAttribute="bottom" constant="16" id="Q6c-j4-fOY"/>
                             <constraint firstItem="O0I-FU-TFo" firstAttribute="top" secondItem="3qR-iX-PjC" secondAttribute="bottom" constant="16" id="aMH-3z-Yx9"/>
-                            <constraint firstItem="za2-w9-PVI" firstAttribute="centerX" secondItem="UpX-hy-zVV" secondAttribute="centerX" id="as2-H2-BvA"/>
-                            <constraint firstItem="0aB-8v-9uC" firstAttribute="top" secondItem="za2-w9-PVI" secondAttribute="bottom" constant="40" id="flH-eG-4Gg"/>
-                            <constraint firstItem="Gy8-lf-XaO" firstAttribute="centerY" secondItem="za2-w9-PVI" secondAttribute="centerY" id="i2V-Ud-MKC"/>
+                            <constraint firstItem="p1j-Ig-O9x" firstAttribute="top" secondItem="fdC-2S-wYC" secondAttribute="top" constant="11" id="eGn-Vq-gVP"/>
+                            <constraint firstItem="0aB-8v-9uC" firstAttribute="top" secondItem="p1j-Ig-O9x" secondAttribute="bottom" constant="33" id="lXw-gD-Qok"/>
                             <constraint firstItem="3qR-iX-PjC" firstAttribute="leading" secondItem="fdC-2S-wYC" secondAttribute="leading" constant="10" id="lnY-XQ-keF"/>
-                            <constraint firstItem="za2-w9-PVI" firstAttribute="top" secondItem="fdC-2S-wYC" secondAttribute="top" constant="18" id="m27-IT-ePa"/>
                             <constraint firstItem="Jwm-cK-Gnn" firstAttribute="bottom" secondItem="UpX-hy-zVV" secondAttribute="bottom" constant="247" id="mVm-Da-1pr"/>
+                            <constraint firstItem="fdC-2S-wYC" firstAttribute="trailing" secondItem="p1j-Ig-O9x" secondAttribute="trailing" constant="13" id="sOg-tk-7bN"/>
                             <constraint firstItem="UEg-gR-Ukn" firstAttribute="leading" secondItem="fdC-2S-wYC" secondAttribute="leading" constant="10" id="uqw-x1-bht"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="fdC-2S-wYC"/>
@@ -856,6 +868,7 @@
                         <outlet property="btnUploadPhoto" destination="0aB-8v-9uC" id="K50-ow-oVa"/>
                         <outlet property="constrBottomViewUploadPhoto" destination="mVm-Da-1pr" id="Lsg-Fy-h1Q"/>
                         <outlet property="constrHeightViewUploadPhoto" destination="pkZ-80-EdY" id="sXE-i5-SqW"/>
+                        <outlet property="constrTopBtnUploadPhoto" destination="lXw-gD-Qok" id="A9t-cm-8qe"/>
                         <outlet property="txfDescription" destination="O0I-FU-TFo" id="qe0-My-C1V"/>
                         <outlet property="txfEpisodTitle" destination="UEg-gR-Ukn" id="KMV-1D-sC4"/>
                         <outlet property="txfSeasonEpisod" destination="3qR-iX-PjC" id="vUT-OD-1Cx"/>

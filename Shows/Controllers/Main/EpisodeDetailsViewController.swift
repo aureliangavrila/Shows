@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EpisodeDetailsViewController: BaseViewController {
+class EpisodeDetailsViewController: BaseViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var imgEpisode: UIImageView!
     @IBOutlet weak var lblEpisodeName: UILabel!
@@ -31,12 +31,18 @@ class EpisodeDetailsViewController: BaseViewController {
         updateUI(episode: currEpisode)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+    }
+    
     //MARK: - Custom Methods
     
     func updateUI(episode: Episode) {
         lblEpisodeName.text = episode.title
         lblSeasonEpisode.text = "S\(episode.season) E\(episode.episodeNumber)"
         lblEpisodeDescription.text = episode.description
+        constrHeightLblDescription.constant = episode.description.stringHeight(limit: self.lblEpisodeDescription.frame.width , and: self.lblEpisodeDescription.font)
         
         imgEpisode.kf.setImage(with:  URL(string: "https://api.infinum.academy" + episode.imageUrl)!)
     }

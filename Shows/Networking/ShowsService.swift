@@ -21,90 +21,128 @@ class ShowServices {
     
     let baseURL = "https://api.infinum.academy"
     
-    func getUser(_ email: String, password: String, completion: @escaping (_ succes: Bool) -> Void ){
-        AF.request(baseURL + "/api/users/sessions",
-                 method: .post,
-                 parameters: ["email":email, "password":password],
-                 encoding: JSONEncoding.default,
-                 headers: headers)
-        .validate()
-            .responseJSON { (response) in
-                
-                switch response.result {
-                case .success(let data):
-                    if let json = data as? [String : Any] {
-                        if let data = json["data"] as? [String : Any] {
-                            self.authToken = data["token"] as! String
-                            
-                            completion(true)
-                        }
-                    }
-                case .failure(let error):
-                    print(error.localizedDescription)
-                    completion(false)
-                }
-        }
-    }
-    
-    
-    func getShows(completion: @escaping (_ shows: [Show]?, _ error: Error?) -> Void) {
-        headers["Authorization"] = authToken
-        
-        AF.request(baseURL + "/api/shows",
-                   method: .get,
+    private func start(_ path: String, method: HTTPMethod, paramters: [String : String]?, headers: HTTPHeaders, completion: @escaping (AFDataResponse<Any>) -> Void) {
+        AF.request(baseURL + path,
+                   method: method,
+                   parameters: paramters,
                    encoding: JSONEncoding.default,
                    headers: headers)
             .validate()
             .responseJSON { (response) in
+                completion(response)
+        }
+    }
+    
+    //MARK: - LOGIN
+    
+    func getUser(_ email: String, password: String, completion: @escaping (_ succes: Bool, _ error: Error?) -> Void ){
+        start("/api/users/sessions",
+              method: .post,
+              paramters: ["email":email, "password":password],
+              headers: headers) { (response) in
                 
-                    switch response.result {
-                    case .success(let data):
+                switch response.result {
+                case .success(let data):
                     
-                        var arrTempShows = [Show]()
-                        if let dataJSON = data as? [String : AnyObject] {
-                            if let arrayJSON = dataJSON["data"] as? [[String : AnyObject]] {
-                                for json in arrayJSON {
-                                    let show = Show.create(json: json)
-                                    arrTempShows.append(show)
-                                }
-                            }
-                        }
-                        
-                        completion(arrTempShows, nil)
-                        
-                    case .failure(let afError):
-                        print(afError.localizedDescription)
+                    guard let json = data as? [String : AnyObject] else {
+                        completion(false, nil)
+                        return
                     }
+                    
+                    guard let data = json["data"] as? [String : AnyObject] else {
+                        completion(false, nil)
+                        return
+                    }
+                    
+                    self.authToken = data["token"] as! String
+                    
+                    completion(true, nil)
+                    
+                case .failure( _):
+                    
+                    guard let statusCode =  response.response?.statusCode else {
+                        completion(false, SError.unknown)
+                        return
+                    }
+                    
+                    if statusCode == 401 {
+                        completion(false, SError.invalidUser)
+                    }
+                    
+                    completion(false, SError.unknown)
                 }
         }
+    }
     
+    //MARK: - MAIN
+    
+    func getShows(completion: @escaping (_ shows: [Show]?, _ error: Error?) -> Void) {
+        headers["Authorization"] = authToken
+        
+        start("/api/shows",
+              method: .get,
+              paramters: nil,
+              headers: headers) { (response) in
+                
+                switch response.result {
+                case .success(let data):
+                    
+                    var arrTempShows = [Show]()
+                    
+                    guard let dataJSON = data as? [String : AnyObject] else {
+                        completion([], nil)
+                        return
+                    }
+                    
+                    guard let arrayJSON = dataJSON["data"] as? [[String : AnyObject]] else {
+                        completion([], nil)
+                        return
+                    }
+                    
+                    for json in arrayJSON {
+                        let show = Show.create(json: json)
+                        arrTempShows.append(show)
+                    }
+                    
+                    completion(arrTempShows, nil)
+                    
+                case .failure(let afError):
+                    completion(nil, SError.apiError(message: afError.localizedDescription))
+                }
+        }
+    }
     
     func getShowInfo(_ show: Show, completion: @escaping (_ shows: Show?, _ error: Error?) -> Void) {
         headers["Authorization"] = authToken
         
-        AF.request(baseURL + "/api/shows/\(show.id)",
+        start("/api/shows/\(show.id)",
             method: .get,
-            encoding: JSONEncoding.default,
-            headers: headers)
-            .validate()
-            .responseJSON { (response) in
+            paramters: nil,
+            headers: headers) { (response) in
                 switch response.result {
                 case .success(let data):
                     
                     var tempShow = show
-                    if let dataJSON = data as? [String : AnyObject] {
-                        if let json = dataJSON["data"] as? [String : AnyObject] {
-                            let description = json["description"] as? String
-                            let type = json["type"] as? String
-                            
-                            tempShow.updateInfo(description, type: type)
-                            
-                            completion(tempShow, nil)
-                        }
+                    
+                    guard let json = data as? [String : AnyObject] else {
+                        completion(show, nil)
+                        return
                     }
                     
+                    guard let data = json["data"] as? [String : AnyObject] else {
+                        completion(show, nil)
+                        return
+                    }
+                    
+                    let description = data["description"] as? String
+                    let type = data["type"] as? String
+                    
+                    tempShow.updateInfo(description, type: type)
+                    
+                    completion(tempShow, nil)
+                    
                 case .failure(let afError):
-                    print(afError.localizedDescription)
+                    completion(nil, SError.apiError(message: afError.localizedDescription))
                 }
         }
     }
@@ -112,60 +150,71 @@ class ShowServices {
     func getShowEpisodes(_ show: Show, completion: @escaping (_ shows: [Episode]?, _ error: Error?) -> Void) {
         headers["Authorization"] = authToken
         
-        AF.request(baseURL + "/api/shows/\(show.id)/episodes",
-            method: .get,
-            encoding: JSONEncoding.default,
-            headers: headers)
-            .validate()
-            .responseJSON { (response) in
-                switch response.result {
-                case .success(let data):
-                    
-                    print(data)
-                    var arrTempEpisodes = [Episode]()
-                    if let dataJSON = data as? [String : AnyObject] {
-                        if let arrayJSON = dataJSON["data"] as? [[String : AnyObject]] {
-                            for json in arrayJSON {
-                                let ep = Episode.create(json: json)
-                                arrTempEpisodes.append(ep)
-                            }
-                        }
-                    }
-                    
-                    completion(arrTempEpisodes, nil)
-                case .failure(let afError):
-                    print(afError.localizedDescription)
+        start("/api/shows/\(show.id)/episodes",
+        method: .get,
+        paramters: nil,
+        headers: headers) { (response) in
+            
+            switch response.result {
+            case .success(let data):
+                
+                var arrTempEpisodes = [Episode]()
+                
+                guard let dataJSON = data as? [String : AnyObject] else {
+                    completion([], nil)
+                    return
                 }
+                
+                guard let arrayJSON = dataJSON["data"] as? [[String : AnyObject]] else {
+                    completion([], nil)
+                    return
+                }
+                
+                for json in arrayJSON {
+                    let ep = Episode.create(json: json)
+                    arrTempEpisodes.append(ep)
+                }
+                
+                completion(arrTempEpisodes, nil)
+                
+            case .failure(let afError):
+                completion(nil, SError.apiError(message: afError.localizedDescription))
+            }
         }
     }
     
     func getCommetnsForEpisode(_ episode: Episode, completion: @escaping (_ shows: [Comment]?, _ error: Error?) -> Void) {
         headers["Authorization"] = authToken
         
-        AF.request(baseURL + "/api/episodes/\(episode.id)/comments",
+        start("/api/episodes/\(episode.id)/comments",
             method: .get,
-            encoding: JSONEncoding.default,
-            headers: headers)
-            .validate()
-            .responseJSON { (response) in
+            paramters: nil,
+            headers: headers) { (response) in
+                
                 switch response.result {
                 case .success(let data):
-            
+                    
                     var arrTempEpisodes = [Comment]()
-                    if let dataJSON = data as? [String : AnyObject] {
-                        if let arrayJSON = dataJSON["data"] as? [[String : AnyObject]] {
-                            for json in arrayJSON {
-                                let comment = Comment.create(json: json)
-                                arrTempEpisodes.append(comment)
-                            }
-                        }
+            
+                    guard let dataJSON = data as? [String : AnyObject] else {
+                        completion([], nil)
+                        return
+                    }
+                    
+                    guard let arrayJSON = dataJSON["data"] as? [[String : AnyObject]] else {
+                        completion([], nil)
+                        return
+                    }
+                    
+                    for json in arrayJSON {
+                        let comment = Comment.create(json: json)
+                        arrTempEpisodes.append(comment)
                     }
                     
                     completion(arrTempEpisodes, nil)
                     
-                    completion(arrTempEpisodes, nil)
                 case .failure(let afError):
-                    print(afError.localizedDescription)
+                    completion(nil, SError.apiError(message: afError.localizedDescription))
                 }
         }
     }
@@ -173,32 +222,63 @@ class ShowServices {
     func postCommentForEpisode(_ episode: Episode, cooment: String,completion: @escaping (_ shows: Comment?, _ error: Error?) -> Void) {
         headers["Authorization"] = authToken
         
-        AF.request(baseURL + "/api/comments",
-            method: .post,
-            parameters: ["text": cooment, "episodeId": episode.id],
-            encoding: JSONEncoding.default,
-            headers: headers)
-            .validate()
-            .responseJSON { (response) in
+        start("/api/comments",
+              method: .post,
+              paramters: ["text": cooment, "episodeId": episode.id],
+              headers: headers) { (response) in
+                
                 switch response.result {
                 case .success(let data):
-                    print(data)
                     
-                    if let dataJSON = data as? [String : AnyObject] {
-                        if let json = dataJSON["data"] as? [String : AnyObject] {
-                            let comment = Comment.create(json: json)
-                            
-                            completion(comment, nil)
-                        }
+                    guard let json = data as? [String : AnyObject] else {
+                        completion(nil, nil)
+                        return
                     }
                     
+                    guard let data = json["data"] as? [String : AnyObject] else {
+                        completion(nil, nil)
+                        return
+                    }
+                    
+                    let comment = Comment.create(json: data)
+                    
+                    completion(comment, nil)
+                    
                 case .failure(let afError):
-                    print(afError.localizedDescription)
+                    completion(nil, SError.apiError(message: afError.localizedDescription))
                 }
         }
     }
     
-    func addEpisode(_ image: UIImage, showId: String, title: String, season: String, episode: String, description: String) {
+    private func createEpisode(_ showId: String, title: String, season: String, episode: String, description: String, mediaId: String,
+                               completion: @escaping (_ succes: Bool, _ error: Error?) -> Void ) {
+        
+        headers["Authorization"] = authToken
+        
+        let parameters = ["showId" : showId,
+                          "mediaId" : mediaId,
+                          "title" : title,
+                          "description" : description,
+                          "episodeNumber" : episode,
+                          "season" : season]
+        
+        start("/api/episodes",
+              method: .post,
+              paramters: parameters,
+              headers: headers) { (response) in
+                
+                switch response.result {
+                case .success( _):
+                    completion(true, nil)
+                    
+                case .failure(let afError):
+                    completion(false, SError.apiError(message: afError.localizedDescription))
+                }
+        }
+    }
+    
+    func addEpisode(_ image: UIImage, showId: String, title: String, season: String, episode: String, description: String,
+                    completion: @escaping (_ succes: Bool, _ error: Error?) -> Void ) {
         
         let headers: HTTPHeaders = ["Content-type" : "multipart/form-data",
                                     "Content-Disposition" : "form-data",
@@ -222,7 +302,7 @@ class ShowServices {
         uploadRequst.responseJSON { (response) in
             switch response.result {
             case .success(let data):
-                print(data)
+
                 guard let dataJSON = data as? [String : AnyObject] else {
                     return
                 }
@@ -235,102 +315,15 @@ class ShowServices {
                     return
                 }
                 
-                self.createEpisode(showId, title: title, season: season, episode: episode, description: description, mediaId: mediaId)
+                self.createEpisode(showId, title: title, season: season, episode: episode, description: description, mediaId: mediaId) { (success, error) in
+                    completion(success, error)
+                }
                 
-            case.failure(let aferror):
-                print(aferror.localizedDescription)
+            case.failure(let afError):
+                completion(false, SError.apiError(message: afError.localizedDescription))
             }
         }
     }
     
-    func createEpisode(_ showId: String, title: String, season: String, episode: String, description: String, mediaId: String) {
-        headers["Authorization"] = authToken
-        
-        let parameters = ["showId" : showId,
-                          "mediaId" : mediaId,
-                          "title" : title,
-                          "description" : description,
-                          "episodeNumber" : episode,
-                          "season" : season]
-        
-        AF.request(baseURL + "/api/episodes",
-                   method: .post,
-                   parameters: parameters,
-                   encoding: JSONEncoding.default,
-                   headers: headers)
-            .validate()
-            .responseJSON { (response) in
-                switch response.result {
-                case .success(let data):
-                    print(data)
-                    
-                case .failure(let afError):
-                    print(afError.localizedDescription)
-                }
-        }
-    }
-    
-//    func imagupload(){
-//        let upload_file = image
-//
-//        var parameters = [String:AnyObject]()
-//        parameters = ["file": upload_file] as [String : AnyObject]
-//
-//        let URL = "myURL"
-//
-//
-//        requestWith(endUrl: URL, imageData: image.jpegData(compressionQuality: 1.0), parameters: parameters, onCompletion: { (json) in
-//            print(json)
-//
-//        }) { (error) in
-//            print(error)
-//
-//        }
-//    }
-
-
-//      func requestWith(endUrl: String, imagedata: Data?, parameters: [String : String], onCompletion: ((JSON?) -> Void)? = nil, onError: ((Error?) -> Void)? = nil){
-//
-//        let url = endUrl
-//
-//
-//        let headers: HTTPHeaders = [
-//
-//            "Content-type": "multipart/form-data"
-//        ]
-//
-//        AF.upload(multipartFormData: { (multipartFormData) in
-//            for (key, value) in parameters {
-//                multipartFormData.append("\(value)".data(using: String.Encoding.utf8)!, withName: key as String)
-//            }
-//
-//            if let data = imagedata{
-//                multipartFormData.append(data, withName: "imagename", fileName: "imagename.jpg", mimeType: "image/jpeg")
-//            }
-//
-//        }, to:url,headers: headers)
-//        { (result) in
-//            switch result {
-//            case .success(let upload, _, _):
-//                upload.responseJSON { response in
-//                    let json : JSON = JSON(response.result.value)
-//                     print(json)
-//                    if let err = response.error{
-//                        onError?(err)
-//
-//                        return
-//                    }
-//                    onCompletion?(json)
-//
-//                }
-//            case .failure(let error):
-//               //print("Error in upload: \(error.localizedDescription)")
-//                onError?(error)
-//
-//            }
-//
-//        }
-//
-//    }
     
 }

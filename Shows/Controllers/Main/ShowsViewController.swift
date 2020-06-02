@@ -56,6 +56,9 @@ class ShowsViewController: UIViewController {
             
             DispatchQueue.main.async {
                 guard error == nil else {
+                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    
                     return
                 }
                 

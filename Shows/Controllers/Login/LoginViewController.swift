@@ -158,11 +158,19 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         
         SVProgressHUD.show()
         
-        ShowServices.shared.getUser(email, password: password) { [weak self] succes in
+        ShowServices.shared.getUser(email, password: password) { [weak self] (succes, error)  in
             guard let self = self else { return }
             
+             SVProgressHUD.dismiss()
+            
+            guard error == nil else {
+                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
+                
+                return 
+            }
+            
             guard succes == true else {
-                SVProgressHUD.dismiss()
                 return 
             }
             

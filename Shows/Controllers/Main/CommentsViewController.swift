@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class CommentsViewController: BaseViewController {
     
@@ -111,10 +112,17 @@ class CommentsViewController: BaseViewController {
     //MARK: - API Methods
     
     func getCommentsForEpisode() {
+        SVProgressHUD.show()
+        
         ShowServices.shared.getCommetnsForEpisode(currEpisode) {[weak self] (comments, error) in
              guard let self = self else { return }
             
+            SVProgressHUD.dismiss()
+            
             guard error == nil else {
+                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
+                
                 self.viewNoComments.isHidden = false
                 return
             }
@@ -131,8 +139,23 @@ class CommentsViewController: BaseViewController {
     }
     
     func postComment(_ comment: String) {
+        SVProgressHUD.show()
+        
         ShowServices.shared.postCommentForEpisode(currEpisode, cooment: comment) {[weak self] (comment, error) in
             guard let self = self else { return }
+            
+            SVProgressHUD.dismiss()
+            
+            guard error == nil else {
+                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
+                
+                return
+            }
+            
+            guard comment != nil else {
+                return
+            }
             
             self.txfComment.text = ""
             self.arrComments.insert(comment!, at: 0)
