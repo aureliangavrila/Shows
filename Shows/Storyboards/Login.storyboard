@@ -200,6 +200,7 @@
                     <connections>
                         <outlet property="btnLogin" destination="7OQ-h7-V8V" id="cuT-4K-sO1"/>
                         <outlet property="btnShowPassword" destination="gOJ-7Z-4Bz" id="xBd-AG-nqf"/>
+                        <outlet property="constrTopImgLogo" destination="GQz-cb-Pqk" id="pzs-bF-nDx"/>
                         <outlet property="imgCheckRememberMe" destination="jY4-pu-g6Q" id="EX9-RO-lc5"/>
                         <outlet property="txfEmail" destination="MNS-Bf-Cxf" id="EJt-A1-AgY"/>
                         <outlet property="txfPassword" destination="g71-cY-VAZ" id="lzo-tB-F6I"/>

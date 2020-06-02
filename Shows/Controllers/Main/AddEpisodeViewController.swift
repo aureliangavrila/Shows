@@ -10,7 +10,7 @@ import UIKit
 import SkyFloatingLabelTextField
 import Photos
 
-class AddEpisodeViewController: BaseViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
+class AddEpisodeViewController: BaseViewController {
     
     @IBOutlet weak var btnUploadPhoto: UIButton!
     @IBOutlet weak var txfEpisodTitle: SkyFloatingLabelTextField!
@@ -42,6 +42,13 @@ class AddEpisodeViewController: BaseViewController, UIImagePickerControllerDeleg
         btnUploadPhoto.clipsToBounds = true
         
         imagePickerController.delegate = self
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewEndEditing))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func viewEndEditing() {
+        self.view.endEditing(true)
     }
     
     func hideChoosePhotoView() {
@@ -122,6 +129,10 @@ class AddEpisodeViewController: BaseViewController, UIImagePickerControllerDeleg
         hideChoosePhotoView()
     }
     
+
+}
+
+extension AddEpisodeViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate, UITextFieldDelegate {
     //MARK: - UIImagePickerControllerDelegate Methods
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -139,4 +150,22 @@ class AddEpisodeViewController: BaseViewController, UIImagePickerControllerDeleg
         
         dismiss(animated: true, completion: nil)
     }
+    
+    //MARK: - UITextFieldDelegate Methods
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == txfEpisodTitle {
+            txfSeasonEpisod.becomeFirstResponder()
+        }
+        else if textField == txfSeasonEpisod {
+            txfDescription.becomeFirstResponder()
+        }
+        else if  textField == txfDescription {
+            txfDescription.resignFirstResponder()
+        }
+        
+        return true
+    }
+    
+    
 }

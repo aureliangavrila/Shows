@@ -18,6 +18,8 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var imgCheckRememberMe: UIImageView!
     @IBOutlet weak var btnLogin: UIButton!
     
+    @IBOutlet weak var constrTopImgLogo: NSLayoutConstraint!
+    
     var rememberMe = false
     var shouldShowPassword = false
     
@@ -35,10 +37,49 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         enableLoginButton()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
     // MARK: - Custom Methods
     
     func setupUI() {
         btnLogin.layer.cornerRadius = 5
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewEndEditing))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        
+        if UIDevice.current.screenType == .iPhones_5_5s_5c_SE {
+            constrTopImgLogo.constant -= (constrTopImgLogo.constant + 40)
+        }
+        else if UIDevice.current.screenType == .iPhones_6_6s_7_8  {
+            constrTopImgLogo.constant = 0
+        }
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        constrTopImgLogo.constant = 68
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    @objc func viewEndEditing() {
+        self.view.endEditing(true)
     }
     
     func enableLoginButton() {

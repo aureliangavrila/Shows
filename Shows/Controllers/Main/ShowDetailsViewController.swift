@@ -45,6 +45,7 @@ class ShowDetailsViewController: BaseViewController {
     }
     
     func registerCells() {
+        
         self.tblEpisodes.register(UINib(nibName: "ShowDetailsTVCell", bundle: nil), forCellReuseIdentifier: "ShowDetailsTVCell_ID")
     }
     
