@@ -14,9 +14,12 @@ class ShowDetailsViewController: BaseViewController {
     @IBOutlet weak var imgShow: UIImageView!
     @IBOutlet weak var viewDividerShadow: UIView!
     @IBOutlet weak var lblShowName: UILabel!
-    @IBOutlet weak var txtShowDescription: UITextView!
+    @IBOutlet weak var lblDescription: UILabel!
     @IBOutlet weak var lblCountEpisodes: UILabel!
     @IBOutlet weak var tblEpisodes: UITableView!
+    
+    @IBOutlet weak var constrHeighTxtDescription: NSLayoutConstraint!
+    
     
     var currShow: Show!
     var arrEpisodes = [Episode]()
@@ -42,7 +45,17 @@ class ShowDetailsViewController: BaseViewController {
         lblShowName.text = show.title
         imgShow.kf.setImage(with: URL(string: "https://api.infinum.academy" + show.imageUrl)!)
         
-        txtShowDescription.text = show.description ?? ""
+        let description = show.description ?? ""
+        lblDescription.text = description
+        
+        let height = description.stringHeight(limit: self.lblDescription.frame.width , and: self.lblDescription.font)
+        
+        if height <= 90 {
+            constrHeighTxtDescription.constant = height
+        }
+        else {
+            constrHeighTxtDescription.constant = 90
+        }
     }
     
     func registerCells() {

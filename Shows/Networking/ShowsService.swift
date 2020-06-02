@@ -8,8 +8,6 @@
 
 import Foundation
 import Alamofire
-import SwiftyJSON
-
 
 class ShowServices {
     static let shared = ShowServices()
