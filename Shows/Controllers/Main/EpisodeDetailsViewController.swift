@@ -30,15 +30,8 @@ class EpisodeDetailsViewController: BaseViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        updateUI(episode: currEpisode)
+    updateUI(episode: currEpisode)
         
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-//        scrollView.contentSize = contentView.bounds.size
-    
     }
     
     //MARK: - Custom Methods
