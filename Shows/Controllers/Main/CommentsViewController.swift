@@ -115,26 +115,28 @@ class CommentsViewController: BaseViewController {
         SVProgressHUD.show()
         
         ShowServices.shared.getCommetnsForEpisode(currEpisode) {[weak self] (comments, error) in
-             guard let self = self else { return }
+            guard let self = self else { return }
             
-            SVProgressHUD.dismiss()
-            
-            guard error == nil else {
-                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                SVProgressHUD.dismiss()
                 
-                self.viewNoComments.isHidden = false
-                return
+                guard error == nil else {
+                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    
+                    self.viewNoComments.isHidden = false
+                    return
+                }
+                
+                guard let arrayComments = comments, arrayComments.count > 0 else {
+                    self.viewNoComments.isHidden = false
+                    return
+                }
+                
+                self.arrComments = arrayComments
+                self.tblComments.reloadData()
+                self.viewNoComments.isHidden = true
             }
-            
-            guard let arrayComments = comments, arrayComments.count > 0 else {
-                self.viewNoComments.isHidden = false
-                return
-            }
-            
-            self.arrComments = arrayComments
-            self.tblComments.reloadData()
-            self.viewNoComments.isHidden = true
         }
     }
     
@@ -144,24 +146,27 @@ class CommentsViewController: BaseViewController {
         ShowServices.shared.postCommentForEpisode(currEpisode, cooment: comment) {[weak self] (comment, error) in
             guard let self = self else { return }
             
-            SVProgressHUD.dismiss()
-            
-            guard error == nil else {
-                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                SVProgressHUD.dismiss()
                 
-                return
+                guard error == nil else {
+                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    
+                    return
+                }
+                
+                guard comment != nil else {
+                    return
+                }
+                
+                self.viewNoComments.isHidden = true
+                self.txfComment.text = ""
+                self.arrComments.insert(comment!, at: 0)
+                self.tblComments.beginUpdates()
+                self.tblComments.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
+                self.tblComments.endUpdates()
             }
-            
-            guard comment != nil else {
-                return
-            }
-            
-            self.txfComment.text = ""
-            self.arrComments.insert(comment!, at: 0)
-            self.tblComments.beginUpdates()
-            self.tblComments.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
-            self.tblComments.endUpdates()
         }
     }
     

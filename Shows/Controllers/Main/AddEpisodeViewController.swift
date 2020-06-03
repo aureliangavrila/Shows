@@ -26,7 +26,12 @@ class AddEpisodeViewController: BaseViewController {
     @IBOutlet weak var constrBottomViewUploadPhoto: NSLayoutConstraint!
     @IBOutlet weak var constrTopBtnUploadPhoto: NSLayoutConstraint!
     
-    let imagePickerController = UIImagePickerController()
+    lazy var imagePickerController : UIImagePickerController  = {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        
+        return imagePicker
+    }()
     
     var selectedImage: UIImage?
     var showId: String!
@@ -37,7 +42,7 @@ class AddEpisodeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //setupUI()
+        setupUI()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -54,8 +59,6 @@ class AddEpisodeViewController: BaseViewController {
         btnUploadPhoto.layer.cornerRadius = btnUploadPhoto.frame.height / 2
         btnUploadPhoto.layer.masksToBounds = true
         btnUploadPhoto.clipsToBounds = true
-        
-        imagePickerController.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -140,21 +143,23 @@ class AddEpisodeViewController: BaseViewController {
         ShowServices.shared.addEpisode(image, showId: self.showId, title: title, season: value.0, episode: value.1, description: description) {[weak self] (success, error) in
             guard let self = self else { return }
             
-            SVProgressHUD.dismiss()
-            
-            guard error == nil else {
-                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                SVProgressHUD.dismiss()
                 
-                return 
+                guard error == nil else {
+                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    
+                    return
+                }
+                
+                guard success == true else {
+                    return
+                }
+                
+                self.delegate?.newEpisodeCreated()
+                self.navigationController?.popViewController(animated: true)
             }
-            
-            guard success == true else {
-                return
-            }
-            
-            self.delegate?.newEpisodeCreated()
-            self.navigationController?.popViewController(animated: true)
         }
     }
     

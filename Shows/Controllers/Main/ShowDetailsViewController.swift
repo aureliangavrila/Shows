@@ -87,15 +87,17 @@ class ShowDetailsViewController: BaseViewController {
         ShowServices.shared.getShowInfo(currShow) {[weak self] (show, error) in
             guard let self = self else { return }
             
-            guard error == nil else {
-                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                guard error == nil else {
+                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    
+                    return
+                }
                 
-                return
+                self.currShow = show!
+                self.updateUI(show: self.currShow)
             }
-            
-            self.currShow = show!
-            self.updateUI(show: self.currShow)
         }
     }
     
@@ -105,29 +107,31 @@ class ShowDetailsViewController: BaseViewController {
         ShowServices.shared.getShowEpisodes(currShow) {[weak self] (arrEpisodes, error) in
             guard let self = self else { return }
             
-            SVProgressHUD.dismiss()
-            
-            self.scrollView.pullToRefreshView.stopAnimating()
-            
-            guard error == nil else {
-                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                SVProgressHUD.dismiss()
                 
-                self.lblCountEpisodes.text = "0"
-                self.tblEpisodes.isHidden = true
+                self.scrollView.pullToRefreshView.stopAnimating()
                 
-                return
+                guard error == nil else {
+                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                    self.present(alert, animated: true, completion: nil)
+                    
+                    self.lblCountEpisodes.text = "0"
+                    self.tblEpisodes.isHidden = true
+                    
+                    return
+                }
+                
+                guard let episodes = arrEpisodes else {
+                    self.lblCountEpisodes.text = "0"
+                    self.tblEpisodes.isHidden = true
+                    return
+                }
+                
+                self.lblCountEpisodes.text = "\(episodes.count)"
+                self.arrEpisodes = episodes
+                self.tblEpisodes.reloadData()
             }
-            
-            guard let episodes = arrEpisodes else {
-                self.lblCountEpisodes.text = "0"
-                self.tblEpisodes.isHidden = true
-                return
-            }
-            
-            self.lblCountEpisodes.text = "\(episodes.count)"
-            self.arrEpisodes = episodes
-            self.tblEpisodes.reloadData()
         }
     }
     
@@ -139,7 +143,7 @@ class ShowDetailsViewController: BaseViewController {
     
     @IBAction func btnAddNewEpisode(_ sender: UIButton) {
         let vc = NavigationManager.shared.instantiateAddEpisodeViewController()
-        vc.showId = currShow.id
+        vc.showId = self.currShow.id
         vc.delegate = self
         self.navigationController?.pushViewController(vc, animated: true)
     }

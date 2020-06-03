@@ -150,13 +150,13 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     @IBAction func btnLogin(_ sender: UIButton) {
+        SVProgressHUD.show()
+        
         //>>    Save credentials
         UserDefaults.standard.set(rememberMe, forKey: Constants.k_RememberMe)
         
         let email = txfEmail.text!
         let password = txfPassword.text!
-        
-        SVProgressHUD.show()
         
         ShowServices.shared.getUser(email, password: password) { [weak self] (succes, error)  in
             guard let self = self else { return }
