@@ -37,7 +37,7 @@ class AddEpisodeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupUI()
+        //setupUI()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

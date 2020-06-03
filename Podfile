@@ -7,6 +7,7 @@ target 'Shows' do
 
 pod 'SkyFloatingLabelTextField', '~> 3.0'
 pod 'SVProgressHUD'
+pod 'SVPullToRefresh'
 
 pod 'Alamofire'
 

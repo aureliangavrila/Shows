@@ -8,9 +8,11 @@
 
 import UIKit
 import SVProgressHUD
+import SVPullToRefresh
 
 class ShowDetailsViewController: BaseViewController {
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imgShow: UIImageView!
     @IBOutlet weak var viewDividerShadow: UIView!
     @IBOutlet weak var lblShowName: UILabel!
@@ -32,13 +34,30 @@ class ShowDetailsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupUI()
         updateUI(show: self.currShow)
         registerCells()
         getShowInfo()
         getShowEpisodes()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: self.view.frame.height + 10)
+    }
+    
     //MARK: - Custom Methods
+    
+    func setupUI() {
+        scrollView.delegate = self
+        
+        scrollView.addPullToRefresh {
+            self.scrollView.pullToRefreshView.arrowColor = .white
+            self.getShowEpisodes()
+        }
+    
+    }
     
     func updateUI(show: Show) {
         lblShowName.text = show.title
@@ -88,6 +107,8 @@ class ShowDetailsViewController: BaseViewController {
             
             SVProgressHUD.dismiss()
             
+            self.scrollView.pullToRefreshView.stopAnimating()
+            
             guard error == nil else {
                 let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
                 self.present(alert, animated: true, completion: nil)
@@ -126,7 +147,7 @@ class ShowDetailsViewController: BaseViewController {
     
 }
 
-extension ShowDetailsViewController: UITableViewDataSource, UITableViewDelegate, AddNewEpisodeDelegate {
+extension ShowDetailsViewController: UITableViewDataSource, UITableViewDelegate, AddNewEpisodeDelegate, UIScrollViewDelegate {
     
     //MARK: - UITableViewDataSource
     
@@ -158,6 +179,11 @@ extension ShowDetailsViewController: UITableViewDataSource, UITableViewDelegate,
         let vc = NavigationManager.shared.instantiateEpisodeDetailsViewController()
         vc.currEpisode = arrEpisodes[indexPath.row]
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    //MARK: - UIScrollViewDelegate Methods
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
     }
     
     //MARK: - AddNewEpisodeDelegate Methods

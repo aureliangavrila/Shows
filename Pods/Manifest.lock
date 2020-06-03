@@ -5,12 +5,14 @@ PODS:
   - Kingfisher/Core (5.14.0)
   - SkyFloatingLabelTextField (3.8.0)
   - SVProgressHUD (2.2.5)
+  - SVPullToRefresh (0.4.1)
 
 DEPENDENCIES:
   - Alamofire
   - Kingfisher (~> 5.0)
   - SkyFloatingLabelTextField (~> 3.0)
   - SVProgressHUD
+  - SVPullToRefresh
 
 SPEC REPOS:
   trunk:
@@ -18,13 +20,15 @@ SPEC REPOS:
     - Kingfisher
     - SkyFloatingLabelTextField
     - SVProgressHUD
+    - SVPullToRefresh
 
 SPEC CHECKSUMS:
   Alamofire: c1ca147559e730bfb2182c8c7aafbdd90a867987
   Kingfisher: 7b64389a43139c903ec434788344c288217c792d
   SkyFloatingLabelTextField: 5a338412114808e961fe2d14ea2c5452c8b6e4aa
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SVPullToRefresh: ba2e718695a43253d8bea6852d2960097dc15d8c
 
-PODFILE CHECKSUM: 29d3c1b660a0473a7308d0a99a1708cf0f378661
+PODFILE CHECKSUM: 310457a11353188ed1d338652b82952cda1107a1
 
 COCOAPODS: 1.9.1
