@@ -29,9 +29,8 @@ class EpisodeDetailsViewController: BaseViewController, UIScrollViewDelegate {
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
-    updateUI(episode: currEpisode)
         
+        updateUI(episode: currEpisode)
     }
     
     //MARK: - Custom Methods

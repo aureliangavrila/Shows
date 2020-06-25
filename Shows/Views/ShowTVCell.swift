@@ -24,4 +24,14 @@ class ShowTVCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func configureCellWith(_ show: Show) {
+        lblNameShow.text = show.title
+        
+        guard let url = URL(string: Constants.baseURL + show.imageUrl) else {
+            return
+        }
+        
+        imgShow.kf.setImage(with: url)
+    }
+    
 }

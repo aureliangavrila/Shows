@@ -16,7 +16,7 @@ class NavigationManager {
     
     func instantiateLoginViewController() -> LoginViewController {
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+        let controller = storyboard.instantiateViewController(withIdentifier: String(describing: LoginViewController.self)) as! LoginViewController
         
         return controller
     }
@@ -25,14 +25,14 @@ class NavigationManager {
     
     func instantiateShowsViewController() -> ShowsViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ShowsViewController") as! ShowsViewController
+        let controller = storyboard.instantiateViewController(withIdentifier: String(describing: ShowsViewController.self)) as! ShowsViewController
         
         return controller
     }
     
     func instantiateShowDetailsViewController() -> ShowDetailsViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ShowDetailsViewController") as! ShowDetailsViewController
+        let controller = storyboard.instantiateViewController(withIdentifier: String(describing: ShowDetailsViewController.self)) as! ShowDetailsViewController
         
         return controller
     }

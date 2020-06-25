@@ -28,6 +28,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         setupUI()
+        registerKeyboardHandlers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -49,11 +50,13 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     func setupUI() {
         btnLogin.layer.cornerRadius = 5
         
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewEndEditing))
         self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    func registerKeyboardHandlers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
@@ -114,8 +117,8 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
             
             do {
                 let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
-                                                        account: email,
-                                                        accessGroup: KeychainConfiguration.accessGroup)
+                                                   account: email,
+                                                   accessGroup: KeychainConfiguration.accessGroup)
                 
                 let keychainPassword = try passwordItem.readPassword()
                 
@@ -123,7 +126,9 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
                 txfPassword.text = keychainPassword
                 
             } catch {
+                #if DEBUG
                 print("Error reading password from keychain - \(error)")
+                #endif
             }
         }
         else {
@@ -161,7 +166,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         LoginService.shared.getUser(email, password: password) { [weak self] (succes, error)  in
             guard let self = self else { return }
             
-             SVProgressHUD.dismiss()
+            SVProgressHUD.dismiss()
             
             guard error == nil else {
                 let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
@@ -177,18 +182,20 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
             if self.rememberMe {
                 SVProgressHUD.dismiss()
                 
-                   UserDefaults.standard.set(email, forKey: Constants.k_EmailUser)
-                   
-                   do {
-                       let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
-                                                          account: email,
-                                                          accessGroup: KeychainConfiguration.accessGroup)
-                       
-                       try passwordItem.savePassword(password)
-                   } catch {
-                       print(error.localizedDescription)
-                   }
-               }
+                UserDefaults.standard.set(email, forKey: Constants.k_EmailUser)
+                
+                do {
+                    let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
+                                                       account: email,
+                                                       accessGroup: KeychainConfiguration.accessGroup)
+                    
+                    try passwordItem.savePassword(password)
+                } catch {
+                    #if DEBUG
+                    print(error.localizedDescription)
+                    #endif
+                }
+            }
             
             let vc = NavigationManager.shared.instantiateShowsViewController()
             self.navigationController?.pushViewController(vc, animated: true)

@@ -41,8 +41,11 @@ class AddEpisodeViewController: BaseViewController {
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        registerKeyboardHandlers()
+        setupUploadPhotoButton()
         setupUI()
+        registerKeyboardHandlers()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -55,16 +58,20 @@ class AddEpisodeViewController: BaseViewController {
     //MARK: - Custom Methods
     
     func setupUI() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewEndEditing))
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    func setupUploadPhotoButton() {
         btnUploadPhoto.imageView?.contentMode = .scaleAspectFill
         btnUploadPhoto.layer.cornerRadius = btnUploadPhoto.frame.height / 2
         btnUploadPhoto.layer.masksToBounds = true
         btnUploadPhoto.clipsToBounds = true
-        
+    }
+    
+    func registerKeyboardHandlers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewEndEditing))
-        self.view.addGestureRecognizer(tapGesture)
     }
     
     @objc func viewEndEditing() {
@@ -193,7 +200,7 @@ class AddEpisodeViewController: BaseViewController {
         hideChoosePhotoView()
     }
     
-
+    
 }
 
 extension AddEpisodeViewController: UIImagePickerControllerDelegate & UINavigationControllerDelegate, UITextFieldDelegate {
@@ -207,7 +214,7 @@ extension AddEpisodeViewController: UIImagePickerControllerDelegate & UINavigati
         guard let image = info[.originalImage] as? UIImage else {
             return
         }
-
+        
         selectedImage = image
         btnUploadPhoto.setImage(image, for: .normal)
         btnUploadPhoto.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)

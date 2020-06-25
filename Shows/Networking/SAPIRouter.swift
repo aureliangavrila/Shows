@@ -9,8 +9,8 @@
 import Foundation
 import Alamofire
 
-typealias Headers   = [String : String]
-typealias Json      = [String : Any]
+typealias Headers = [String:String]
+typealias Json = [String:Any]
 
 enum SAPIRouter {
     
@@ -21,7 +21,6 @@ enum SAPIRouter {
 }
 
 extension SAPIRouter: Alamofire.URLRequestConvertible {
-    
     
     func asURLRequest() throws -> URLRequest {
         var urlRequest = URLRequest(url: URL(string: Constants.baseURL + path)!)
@@ -38,14 +37,12 @@ extension SAPIRouter: Alamofire.URLRequestConvertible {
         return try JSONEncoding.default.encode(urlRequest, withJSONObject: params)
     }
     
-    
     var path: String {
         switch self {
         case .login:
             return "/api/users/sessions"
         }
     }
-    
     
     var method: Alamofire.HTTPMethod {
         switch self {

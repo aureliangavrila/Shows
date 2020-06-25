@@ -9,7 +9,6 @@
 import Foundation
 import Alamofire
 
-
 class SNetworkTask: NSObject {
     
     let route: SAPIRouter
@@ -27,7 +26,6 @@ class SNetworkTask: NSObject {
             
             switch response.result {
             case .success(let data):
-                print(data)
                 
                 guard let json = data as? [String : Any] else {
                     completion(.success(nil))

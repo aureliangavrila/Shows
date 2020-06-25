@@ -10,7 +10,7 @@ import UIKit
 
 class BaseViewController: UIViewController {
     
-    // MARK: - UIViewController Methods
+    // MARK: - U IViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -37,7 +37,10 @@ class BaseViewController: UIViewController {
     }
     
     deinit {
+        
+        #if DEBUG
         print("\(className) deinit")
+        #endif
     }
     
     

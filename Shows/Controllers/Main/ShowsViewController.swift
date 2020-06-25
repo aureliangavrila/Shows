@@ -20,13 +20,18 @@ class ShowsViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
+        registerCells()
         getShows()
     }
     
     //MARK: - Custom Methods
     
     func setupUI() {
-        self.tblShows.register(UINib(nibName: "ShowTVCell", bundle: nil), forCellReuseIdentifier: "ShowTVCell_ID")
+       
+    }
+    
+    func registerCells() {
+         self.tblShows.register(UINib(nibName: "ShowTVCell", bundle: nil), forCellReuseIdentifier: "ShowTVCell_ID")
     }
     
     func clearKeychain() {
@@ -76,7 +81,6 @@ class ShowsViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
-
 }
 
 extension ShowsViewController: UITableViewDataSource, UITableViewDelegate {
@@ -92,10 +96,7 @@ extension ShowsViewController: UITableViewDataSource, UITableViewDelegate {
             return UITableViewCell()
         }
         
-        let show = arrShows[indexPath.row]
-        
-        cell.lblNameShow.text = show.title
-        cell.imgShow.kf.setImage(with: URL(string: Constants.baseURL + show.imageUrl)!)
+        cell.configureCellWith(arrShows[indexPath.row])
         
         return cell
     }

@@ -56,7 +56,6 @@ class ShowDetailsViewController: BaseViewController {
             self.scrollView.pullToRefreshView.arrowColor = .white
             self.getShowEpisodes()
         }
-    
     }
     
     func updateUI(show: Show) {
@@ -151,7 +150,7 @@ class ShowDetailsViewController: BaseViewController {
     
 }
 
-extension ShowDetailsViewController: UITableViewDataSource, UITableViewDelegate, AddNewEpisodeDelegate, UIScrollViewDelegate {
+extension ShowDetailsViewController: UITableViewDataSource, UITableViewDelegate {
     
     //MARK: - UITableViewDataSource
     
@@ -164,9 +163,7 @@ extension ShowDetailsViewController: UITableViewDataSource, UITableViewDelegate,
             return UITableViewCell()
         }
         
-        let episode = arrEpisodes[indexPath.row]
-        cell.lblEpisodeName.text = episode.title
-        cell.lblSeasonEpidodeDetails.text = "S\(episode.season) E\(episode.episodeNumber)"
+        cell.configureCellWith(arrEpisodes[indexPath.row])
         
         return cell
     }
@@ -184,15 +181,14 @@ extension ShowDetailsViewController: UITableViewDataSource, UITableViewDelegate,
         vc.currEpisode = arrEpisodes[indexPath.row]
         self.navigationController?.pushViewController(vc, animated: true)
     }
+
     
-    //MARK: - UIScrollViewDelegate Methods
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    }
-    
-    //MARK: - AddNewEpisodeDelegate Methods
+}
+
+extension ShowDetailsViewController: AddNewEpisodeDelegate {
     
     func newEpisodeCreated() {
-        self.getShowEpisodes()
-    }
+         self.getShowEpisodes()
+     }
+    
 }

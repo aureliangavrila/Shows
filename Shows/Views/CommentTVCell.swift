@@ -29,4 +29,19 @@ class CommentTVCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func configureCellWiith(_ comment: Comment, forindexPath indexPath: IndexPath) {
+        lblComment.text = comment.text
+        lblUserName.text = comment.userEmail
+        
+        if indexPath.row % 3 == 0 {
+            imgUser.image = #imageLiteral(resourceName: "img-user1")
+        }
+        else if indexPath.row % 2 == 0 {
+            imgUser.image = #imageLiteral(resourceName: "img-user2")
+        }
+        else {
+            imgUser.image = #imageLiteral(resourceName: "img-user3")
+        }
+    }
+    
 }

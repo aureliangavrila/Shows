@@ -27,7 +27,7 @@ class CommentsViewController: BaseViewController {
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupUI()
         registerCells()
         getCommentsForEpisode()
@@ -170,7 +170,7 @@ class CommentsViewController: BaseViewController {
         }
     }
     
-
+    
 }
 
 extension CommentsViewController: UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
@@ -186,19 +186,7 @@ extension CommentsViewController: UITableViewDataSource, UITableViewDelegate, UI
             return UITableViewCell()
         }
         
-        let comment = arrComments[indexPath.row]
-        cell.lblComment.text = comment.text
-        cell.lblUserName.text = comment.userEmail
-        
-        if indexPath.row % 3 == 0 {
-            cell.imgUser.image = #imageLiteral(resourceName: "img-user1")
-        }
-        else if indexPath.row % 2 == 0 {
-            cell.imgUser.image = #imageLiteral(resourceName: "img-user2")
-        }
-        else {
-            cell.imgUser.image = #imageLiteral(resourceName: "img-user3")
-        }
+        cell.configureCellWiith(arrComments[indexPath.row], forindexPath: indexPath)
         
         return cell
     }

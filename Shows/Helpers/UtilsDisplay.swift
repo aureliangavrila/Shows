@@ -11,7 +11,7 @@ import UIKit
 
 open class UtilsDisplay {
     
-    class func okAlert(name: String?, message: String)  -> UIAlertController {
+    static func okAlert(name: String?, message: String)  -> UIAlertController {
            let alert = UIAlertController(title: name, message: message, preferredStyle: .alert)
            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
            
