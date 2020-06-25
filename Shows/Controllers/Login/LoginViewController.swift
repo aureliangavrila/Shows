@@ -158,7 +158,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         let email = txfEmail.text!
         let password = txfPassword.text!
         
-        ShowServices.shared.getUser(email, password: password) { [weak self] (succes, error)  in
+        LoginService.shared.getUser(email, password: password) { [weak self] (succes, error)  in
             guard let self = self else { return }
             
              SVProgressHUD.dismiss()

@@ -19,6 +19,8 @@ class ShowServices {
     
     let baseURL = Constants.baseURL
     
+    fileprivate var networkTask: SNetworkTask!
+    
     private func start(_ path: String, method: HTTPMethod, paramters: [String : String]?, headers: HTTPHeaders, completion: @escaping (AFDataResponse<Any>) -> Void) {
         AF.request(baseURL + path,
                    method: method,
@@ -28,47 +30,6 @@ class ShowServices {
             .validate()
             .responseJSON { (response) in
                 completion(response)
-        }
-    }
-    
-    //MARK: - LOGIN
-    
-    func getUser(_ email: String, password: String, completion: @escaping (_ succes: Bool, _ error: Error?) -> Void ){
-        start("/api/users/sessions",
-              method: .post,
-              paramters: ["email":email, "password":password],
-              headers: headers) { (response) in
-                
-                switch response.result {
-                case .success(let data):
-                    
-                    guard let json = data as? [String : AnyObject] else {
-                        completion(false, nil)
-                        return
-                    }
-                    
-                    guard let data = json["data"] as? [String : AnyObject] else {
-                        completion(false, nil)
-                        return
-                    }
-                    
-                    self.authToken = data["token"] as! String
-                    
-                    completion(true, nil)
-                    
-                case .failure( _):
-                    
-                    guard let statusCode =  response.response?.statusCode else {
-                        completion(false, SError.unknown)
-                        return
-                    }
-                    
-                    if statusCode == 401 {
-                        completion(false, SError.invalidUser)
-                    }
-                    
-                    completion(false, SError.unknown)
-                }
         }
     }
     
