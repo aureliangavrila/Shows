@@ -9,7 +9,7 @@
 import Foundation
 
 
-struct Episode {
+struct Episode: Codable {
     
     let id: String
     var description: String
@@ -17,6 +17,15 @@ struct Episode {
     let episodeNumber: String
     let season: String
     let title: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "_id"
+        case description
+        case imageUrl
+        case episodeNumber
+        case season
+        case title
+    }
     
     static func create(json: [String : AnyObject]) -> Episode {
         let id = json["_id"] as! String

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		043BE9F5249B39B300EDBC6A /* SNetworkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BE9F4249B39B300EDBC6A /* SNetworkTask.swift */; };
+		043BF05A24AC4185004B663C /* ShowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BF05924AC4184004B663C /* ShowService.swift */; };
 		045DCF8A2482E0B900C18044 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF892482E0B900C18044 /* AppDelegate.swift */; };
 		045DCF8C2482E0B900C18044 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF8B2482E0B900C18044 /* SceneDelegate.swift */; };
 		045DCF8E2482E0B900C18044 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF8D2482E0B900C18044 /* LandingViewController.swift */; };
@@ -48,6 +49,7 @@
 
 /* Begin PBXFileReference section */
 		043BE9F4249B39B300EDBC6A /* SNetworkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNetworkTask.swift; sourceTree = "<group>"; };
+		043BF05924AC4184004B663C /* ShowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowService.swift; sourceTree = "<group>"; };
 		045DCF862482E0B900C18044 /* Shows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shows.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		045DCF892482E0B900C18044 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		045DCF8B2482E0B900C18044 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +104,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		043BF05B24AC418B004B663C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				046059AE24A4649F0003EE04 /* LoginService.swift */,
+				043BF05924AC4184004B663C /* ShowService.swift */,
+				045DCFCF24840D3600C18044 /* ShowsService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		045DCF7D2482E0B900C18044 = {
 			isa = PBXGroup;
 			children = (
@@ -236,8 +248,7 @@
 				04DB589C24988EFB00C21DE0 /* SAPIRouter.swift */,
 				043BE9F4249B39B300EDBC6A /* SNetworkTask.swift */,
 				046EB08E248680120026B529 /* ShowsError.swift */,
-				046059AE24A4649F0003EE04 /* LoginService.swift */,
-				045DCFCF24840D3600C18044 /* ShowsService.swift */,
+				043BF05B24AC418B004B663C /* Services */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -428,6 +439,7 @@
 				045DCFB624837FF900C18044 /* ShowTVCell.swift in Sources */,
 				045DCFC624838E2900C18044 /* CommentTVCell.swift in Sources */,
 				045DCFCB2483E48600C18044 /* KeychainManager.swift in Sources */,
+				043BF05A24AC4185004B663C /* ShowService.swift in Sources */,
 				043BE9F5249B39B300EDBC6A /* SNetworkTask.swift in Sources */,
 				045DCFA62482E9D800C18044 /* UIViewController+Utils.swift in Sources */,
 				04DB589D24988EFB00C21DE0 /* SAPIRouter.swift in Sources */,

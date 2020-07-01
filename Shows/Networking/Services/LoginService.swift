@@ -19,20 +19,28 @@ class LoginService {
         
         networkTask.stat { (result) in
             switch result {
-            case .success(let json):
+            case .success(let data):
                 
-                guard json != nil else {
+                guard data != nil else {
                     completion(false, nil)
                     
                     return
                 }
                 
-                guard let token = json!["token"] as? String else {
+                let json = try! JSONSerialization.jsonObject(with: data!, options: []) as? [String : Any]
+            
+                guard let jsonData = json?["data"] as? [String : Any] else {
                     completion(false, nil)
-                    
+
                     return
                 }
-                
+
+                guard let token = jsonData["token"] as? String else {
+                    completion(false, nil)
+
+                    return
+                }
+
                 SAPIRouter.sessionToken = token
                 
                 completion(true, nil)

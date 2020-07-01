@@ -21,23 +21,13 @@ class SNetworkTask: NSObject {
         self.request = nil
     }
     
-    func stat(completion: @escaping (Result<Json?, SError>) -> Void) {
+    func stat(completion: @escaping (Result<Data?, SError>) -> Void) {
         self.request = sharedManager.request(self.route).responseJSON(completionHandler: { (response) in
             
             switch response.result {
-            case .success(let data):
+            case .success(_):
                 
-                guard let json = data as? [String : Any] else {
-                    completion(.success(nil))
-                    return
-                }
-                
-                guard let data = json["data"] as? [String : Any] else {
-                    completion(.success(nil))
-                    return
-                }
-                
-                completion(.success(data))
+                completion(.success(response.data))
                 
             case .failure( _):
                 guard let statusCode =  response.response?.statusCode else {

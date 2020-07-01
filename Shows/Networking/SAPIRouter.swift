@@ -13,10 +13,12 @@ typealias Headers = [String:String]
 typealias Json = [String:Any]
 
 enum SAPIRouter {
-    
     static var sessionToken = ""
 
     case login(_ email: String, password: String)
+    
+    case getShows
+    case getShowInfo(_ showId: String)
     
 }
 
@@ -41,6 +43,12 @@ extension SAPIRouter: Alamofire.URLRequestConvertible {
         switch self {
         case .login:
             return "/api/users/sessions"
+            
+        case .getShows:
+            return "/api/shows"
+            
+        case .getShowInfo(let showId):
+            return "/api/shows/\(showId)"
         }
     }
     
@@ -48,13 +56,19 @@ extension SAPIRouter: Alamofire.URLRequestConvertible {
         switch self {
         case .login:
             return .post
+        
+        case .getShows, .getShowInfo:
+            return .get
         }
     }
     
-    var parameters: [String : String] {
+    var parameters: [String : String]? {
         switch self {
         case .login(let email, let password):
             return ["email":email, "password":password]
+            
+        case .getShows, .getShowInfo:
+            return nil
         }
     }
     
@@ -66,6 +80,11 @@ extension SAPIRouter: Alamofire.URLRequestConvertible {
         
         switch self {
         case .login:
+            return defaultHeaders
+        
+        case .getShows, .getShowInfo:
+            defaultHeaders["Authorization"] = SAPIRouter.sessionToken
+            
             return defaultHeaders
         }
     }

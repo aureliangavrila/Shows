@@ -56,20 +56,18 @@ class ShowsViewController: UIViewController {
     //MARK: - API Methods
     
     func getShows() {
-        ShowServices.shared.getShows {[weak self] (arrayShows, error) in
+        ShowService.shared.getShows {[weak self] (arrayShows, error) in
             guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                guard error == nil else {
-                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    return
-                }
+            guard error == nil else {
+                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
                 
-                self.arrShows = arrayShows!
-                self.tblShows.reloadData()
+                return
             }
+            
+            self.arrShows = arrayShows!
+            self.tblShows.reloadData()
         }
     }
     

@@ -35,41 +35,6 @@ class ShowServices {
     
     //MARK: - MAIN
     
-    func getShows(completion: @escaping (_ shows: [Show]?, _ error: Error?) -> Void) {
-        headers["Authorization"] = authToken
-        
-        start("/api/shows",
-              method: .get,
-              paramters: nil,
-              headers: headers) { (response) in
-                
-                switch response.result {
-                case .success(let data):
-                    
-                    var arrTempShows = [Show]()
-                    
-                    guard let dataJSON = data as? [String : AnyObject] else {
-                        completion([], nil)
-                        return
-                    }
-                    
-                    guard let arrayJSON = dataJSON["data"] as? [[String : AnyObject]] else {
-                        completion([], nil)
-                        return
-                    }
-                    
-                    for json in arrayJSON {
-                        let show = Show.create(json: json)
-                        arrTempShows.append(show)
-                    }
-                    
-                    completion(arrTempShows, nil)
-                    
-                case .failure(let afError):
-                    completion(nil, SError.apiError(message: afError.localizedDescription))
-                }
-        }
-    }
     
     func getShowInfo(_ show: Show, completion: @escaping (_ shows: Show?, _ error: Error?) -> Void) {
         headers["Authorization"] = authToken
@@ -93,6 +58,7 @@ class ShowServices {
                         return
                     }
                     
+                    print(data)
                     let description = data["description"] as? String
                     let type = data["type"] as? String
                     

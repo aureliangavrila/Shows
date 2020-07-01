@@ -8,8 +8,12 @@
 
 import Foundation
 
+struct Shows: Codable {
+    let data: [Show]
+}
 
-struct Show {
+
+struct Show: Codable {
     
     let id: String
     let imageUrl: String
@@ -19,6 +23,16 @@ struct Show {
     var description: String?
     var type: String?
     var episodes: [Episode]?
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "_id"
+        case imageUrl
+        case likesCount
+        case title
+        case description
+        case type
+        case episodes
+    }
     
     static func create(json: [String : AnyObject]) -> Show {
         let id = json["_id"] as! String
