@@ -13,6 +13,10 @@ struct Shows: Codable {
 }
 
 
+struct ShowInfo: Codable {
+    let data: Show
+}
+
 struct Show: Codable {
     
     let id: String

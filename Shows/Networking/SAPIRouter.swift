@@ -20,6 +20,12 @@ enum SAPIRouter {
     case getShows
     case getShowInfo(_ showId: String)
     
+    case getShowEpisodes(_ showId: String)
+    
+    
+    case getCommentsForEpisode(_ episodeId: String)
+    case postComment(_ episodeId: String, comment: String)
+    
 }
 
 extension SAPIRouter: Alamofire.URLRequestConvertible {
@@ -49,15 +55,30 @@ extension SAPIRouter: Alamofire.URLRequestConvertible {
             
         case .getShowInfo(let showId):
             return "/api/shows/\(showId)"
+            
+        case .getShowEpisodes(let showId):
+            return "/api/shows/\(showId)/episodes"
+            
+        case .getCommentsForEpisode(let episodeId):
+            return "/api/episodes/\(episodeId)/comments"
+            
+        case .postComment:
+            return "/api/comments"
         }
     }
     
     var method: Alamofire.HTTPMethod {
         switch self {
-        case .login:
+        case .login,
+             .postComment:
+            
             return .post
         
-        case .getShows, .getShowInfo:
+        case .getShows,
+             .getShowInfo,
+             .getShowEpisodes,
+             .getCommentsForEpisode:
+            
             return .get
         }
     }
@@ -67,7 +88,13 @@ extension SAPIRouter: Alamofire.URLRequestConvertible {
         case .login(let email, let password):
             return ["email":email, "password":password]
             
-        case .getShows, .getShowInfo:
+        case .postComment(let epiosdeId, let comment):
+            return ["text": comment, "episodeId": epiosdeId]
+            
+        case .getShows,
+             .getShowInfo,
+             .getShowEpisodes,
+             .getCommentsForEpisode:
             return nil
         }
     }
@@ -82,7 +109,12 @@ extension SAPIRouter: Alamofire.URLRequestConvertible {
         case .login:
             return defaultHeaders
         
-        case .getShows, .getShowInfo:
+        case .getShows,
+             .getShowInfo,
+             .getShowEpisodes,
+             .getCommentsForEpisode,
+             .postComment:
+            
             defaultHeaders["Authorization"] = SAPIRouter.sessionToken
             
             return defaultHeaders

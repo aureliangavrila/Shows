@@ -8,6 +8,9 @@
 
 import Foundation
 
+struct Episodes: Codable {
+    let data: [Episode]
+}
 
 struct Episode: Codable {
     

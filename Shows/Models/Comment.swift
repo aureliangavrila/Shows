@@ -8,13 +8,27 @@
 
 import Foundation
 
+struct Comments: Codable {
+    let data: [Comment]
+}
 
-struct Comment {
+struct CommentInfo: Codable {
+    let data: Comment
+}
+
+struct Comment: Codable {
     
     let id: String
     let episodeId: String
     let userEmail: String
     let text: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "_id"
+        case episodeId
+        case userEmail
+        case text
+    }
     
     static func create(json: [String : AnyObject]) -> Comment {
         let id = json["_id"] as! String

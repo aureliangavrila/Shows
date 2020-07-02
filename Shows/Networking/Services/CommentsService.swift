@@ -1,25 +1,24 @@
 //
-//  ShowService.swift
+//  CommentsService.swift
 //  Shows
 //
-//  Created by mac on 01/07/2020.
+//  Created by mac on 02/07/2020.
 //  Copyright © 2020 home. All rights reserved.
 //
 
 import Foundation
 
-class ShowService {
-    static let shared = ShowService()
+class CommentsService {
+    static let shared = CommentsService()
     
     fileprivate var networkTask: SNetworkTask!
     
-    func getShows(completion: @escaping (_ shows: [Show]?, _ error: Error?) -> Void) {
-        networkTask = SNetworkTask(route: SAPIRouter.getShows)
+    func getCommentsForEpisode(_ episode: Episode, completion: @escaping (_ comments: [Comment]?, _ error: Error?) -> Void) {
+        networkTask = SNetworkTask(route: SAPIRouter.getCommentsForEpisode(episode.id))
         
         networkTask.stat { (result) in
             
             DispatchQueue.main.async {
-                
                 switch result {
                 case .success(let data):
                     
@@ -28,12 +27,12 @@ class ShowService {
                         return
                     }
                     
-                    guard let shows = JSONParser.shared.parseJSON(ofType: Shows.self, data!) else {
+                    guard let comments = JSONParser.shared.parseJSON(ofType: Comments.self, data!) else {
                         completion([], nil)
                         return
                     }
                     
-                    completion(shows.data, nil)
+                    completion(comments.data, nil)
                     
                 case .failure(let error):
                     completion(nil, error)
@@ -42,8 +41,8 @@ class ShowService {
         }
     }
     
-    func getShowInfo(_ show: Show, completion: @escaping (_ shows: Show?, _ error: Error?) -> Void) {
-        networkTask = SNetworkTask(route: SAPIRouter.getShowInfo(show.id))
+    func postCommentForEpisode(_ episode: Episode, cooment: String,completion: @escaping (_ comment: Comment?, _ error: Error?) -> Void) {
+        networkTask = SNetworkTask(route: SAPIRouter.postComment(episode.id, comment: cooment))
         
         networkTask.stat { (result) in
             
@@ -56,12 +55,12 @@ class ShowService {
                         return
                     }
                     
-                    guard let show = JSONParser.shared.parseJSON(ofType: ShowInfo.self, data!) else {
+                    guard let comment = JSONParser.shared.parseJSON(ofType: CommentInfo.self, data!) else {
                         completion(nil, nil)
                         return
                     }
                     
-                    completion(show.data, nil)
+                    completion(comment.data, nil)
                     
                 case .failure(let error):
                     completion(nil, error)
@@ -69,6 +68,4 @@ class ShowService {
             }
         }
     }
-    
-    
 }

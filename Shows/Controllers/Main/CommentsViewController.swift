@@ -114,59 +114,55 @@ class CommentsViewController: BaseViewController {
     func getCommentsForEpisode() {
         SVProgressHUD.show()
         
-        ShowServices.shared.getCommetnsForEpisode(currEpisode) {[weak self] (comments, error) in
+        CommentsService.shared.getCommentsForEpisode(currEpisode) {[weak self] (comments, error) in
             guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                SVProgressHUD.dismiss()
+            SVProgressHUD.dismiss()
+            
+            guard error == nil else {
+                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
                 
-                guard error == nil else {
-                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    self.viewNoComments.isHidden = false
-                    return
-                }
-                
-                guard let arrayComments = comments, arrayComments.count > 0 else {
-                    self.viewNoComments.isHidden = false
-                    return
-                }
-                
-                self.arrComments = arrayComments
-                self.tblComments.reloadData()
-                self.viewNoComments.isHidden = true
+                self.viewNoComments.isHidden = false
+                return
             }
+            
+            guard let arrayComments = comments, arrayComments.count > 0 else {
+                self.viewNoComments.isHidden = false
+                return
+            }
+            
+            self.arrComments = arrayComments
+            self.tblComments.reloadData()
+            self.viewNoComments.isHidden = true
         }
     }
     
     func postComment(_ comment: String) {
         SVProgressHUD.show()
         
-        ShowServices.shared.postCommentForEpisode(currEpisode, cooment: comment) {[weak self] (comment, error) in
+        CommentsService.shared.postCommentForEpisode(currEpisode, cooment: comment) {[weak self] (comment, error) in
             guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                SVProgressHUD.dismiss()
+            SVProgressHUD.dismiss()
+            
+            guard error == nil else {
+                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
                 
-                guard error == nil else {
-                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    return
-                }
-                
-                guard comment != nil else {
-                    return
-                }
-                
-                self.viewNoComments.isHidden = true
-                self.txfComment.text = ""
-                self.arrComments.insert(comment!, at: 0)
-                self.tblComments.beginUpdates()
-                self.tblComments.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
-                self.tblComments.endUpdates()
+                return
             }
+            
+            guard comment != nil else {
+                return
+            }
+            
+            self.viewNoComments.isHidden = true
+            self.txfComment.text = ""
+            self.arrComments.insert(comment!, at: 0)
+            self.tblComments.beginUpdates()
+            self.tblComments.insertRows(at: [IndexPath.init(row: 0, section: 0)], with: .automatic)
+            self.tblComments.endUpdates()
         }
     }
     

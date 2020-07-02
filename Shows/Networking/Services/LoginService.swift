@@ -27,9 +27,13 @@ class LoginService {
                     return
                 }
                 
-                let json = try! JSONSerialization.jsonObject(with: data!, options: []) as? [String : Any]
+                guard let json = JSONParser.shared.parseToJSON(data!) else {
+                    completion(false, nil)
+                    
+                    return
+                }
             
-                guard let jsonData = json?["data"] as? [String : Any] else {
+                guard let jsonData = json["data"] as? [String : Any] else {
                     completion(false, nil)
 
                     return

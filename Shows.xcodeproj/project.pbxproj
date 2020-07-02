@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		043BE9F5249B39B300EDBC6A /* SNetworkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BE9F4249B39B300EDBC6A /* SNetworkTask.swift */; };
 		043BF05A24AC4185004B663C /* ShowService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BF05924AC4184004B663C /* ShowService.swift */; };
+		043BF05D24AD9420004B663C /* JSONParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BF05C24AD9420004B663C /* JSONParser.swift */; };
+		043BF05F24ADA94F004B663C /* EpisodesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BF05E24ADA94F004B663C /* EpisodesService.swift */; };
+		043BF06124ADADF1004B663C /* CommentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043BF06024ADADF1004B663C /* CommentsService.swift */; };
 		045DCF8A2482E0B900C18044 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF892482E0B900C18044 /* AppDelegate.swift */; };
 		045DCF8C2482E0B900C18044 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF8B2482E0B900C18044 /* SceneDelegate.swift */; };
 		045DCF8E2482E0B900C18044 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF8D2482E0B900C18044 /* LandingViewController.swift */; };
@@ -50,6 +53,9 @@
 /* Begin PBXFileReference section */
 		043BE9F4249B39B300EDBC6A /* SNetworkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SNetworkTask.swift; sourceTree = "<group>"; };
 		043BF05924AC4184004B663C /* ShowService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowService.swift; sourceTree = "<group>"; };
+		043BF05C24AD9420004B663C /* JSONParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONParser.swift; sourceTree = "<group>"; };
+		043BF05E24ADA94F004B663C /* EpisodesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesService.swift; sourceTree = "<group>"; };
+		043BF06024ADADF1004B663C /* CommentsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsService.swift; sourceTree = "<group>"; };
 		045DCF862482E0B900C18044 /* Shows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shows.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		045DCF892482E0B900C18044 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		045DCF8B2482E0B900C18044 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +115,8 @@
 			children = (
 				046059AE24A4649F0003EE04 /* LoginService.swift */,
 				043BF05924AC4184004B663C /* ShowService.swift */,
+				043BF05E24ADA94F004B663C /* EpisodesService.swift */,
+				043BF06024ADADF1004B663C /* CommentsService.swift */,
 				045DCFCF24840D3600C18044 /* ShowsService.swift */,
 			);
 			path = Services;
@@ -248,6 +256,7 @@
 				04DB589C24988EFB00C21DE0 /* SAPIRouter.swift */,
 				043BE9F4249B39B300EDBC6A /* SNetworkTask.swift */,
 				046EB08E248680120026B529 /* ShowsError.swift */,
+				043BF05C24AD9420004B663C /* JSONParser.swift */,
 				043BF05B24AC418B004B663C /* Services */,
 			);
 			path = Networking;
@@ -419,6 +428,7 @@
 			files = (
 				046EB08F248680120026B529 /* ShowsError.swift in Sources */,
 				045DCFB224837F3400C18044 /* ShowsViewController.swift in Sources */,
+				043BF05D24AD9420004B663C /* JSONParser.swift in Sources */,
 				046059AF24A4649F0003EE04 /* LoginService.swift in Sources */,
 				0494348D24850B6700DD20A5 /* Comment.swift in Sources */,
 				045DCFC92483E1A300C18044 /* Constants.swift in Sources */,
@@ -428,6 +438,7 @@
 				045DCF8E2482E0B900C18044 /* LandingViewController.swift in Sources */,
 				0494348B2484FCBD00DD20A5 /* Episode.swift in Sources */,
 				045DCFB02483041000C18044 /* UtilsCheck.swift in Sources */,
+				043BF06124ADADF1004B663C /* CommentsService.swift in Sources */,
 				045DCFB924838B1200C18044 /* ShowDetailsViewController.swift in Sources */,
 				045DCFAD2482FB2900C18044 /* NavigationManager.swift in Sources */,
 				045DCFA32482E8AF00C18044 /* BaseViewController.swift in Sources */,
@@ -445,6 +456,7 @@
 				04DB589D24988EFB00C21DE0 /* SAPIRouter.swift in Sources */,
 				045DCFC224838E0A00C18044 /* ShowDetailsTVCell.swift in Sources */,
 				049434862484C3C400DD20A5 /* Show.swift in Sources */,
+				043BF05F24ADA94F004B663C /* EpisodesService.swift in Sources */,
 				045DCFBB24838B8500C18044 /* EpisodeDetailsViewController.swift in Sources */,
 				045DCFBD24838B9400C18044 /* AddEpisodeViewController.swift in Sources */,
 			);

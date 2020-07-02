@@ -76,61 +76,56 @@ class ShowDetailsViewController: BaseViewController {
     }
     
     func registerCells() {
-        
         self.tblEpisodes.register(UINib(nibName: "ShowDetailsTVCell", bundle: nil), forCellReuseIdentifier: "ShowDetailsTVCell_ID")
     }
     
     //MARK: - API Methods
     
     func getShowInfo() {
-        ShowServices.shared.getShowInfo(currShow) {[weak self] (show, error) in
+        ShowService.shared.getShowInfo(currShow) {[weak self] (show, error) in
             guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                guard error == nil else {
-                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    return
-                }
+            guard error == nil else {
+                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
                 
-                self.currShow = show!
-                self.updateUI(show: self.currShow)
+                return
             }
+            
+            self.currShow = show!
+            self.updateUI(show: self.currShow)
         }
     }
     
     func getShowEpisodes() {
         SVProgressHUD.show()
         
-        ShowServices.shared.getShowEpisodes(currShow) {[weak self] (arrEpisodes, error) in
+        EpisodesService.shared.getShowEpisodes(currShow) {[weak self] (arrEpisodes, error) in
             guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                SVProgressHUD.dismiss()
+            SVProgressHUD.dismiss()
+            
+            self.scrollView.pullToRefreshView.stopAnimating()
+            
+            guard error == nil else {
+                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+                self.present(alert, animated: true, completion: nil)
                 
-                self.scrollView.pullToRefreshView.stopAnimating()
+                self.lblCountEpisodes.text = "0"
+                self.tblEpisodes.isHidden = true
                 
-                guard error == nil else {
-                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    self.lblCountEpisodes.text = "0"
-                    self.tblEpisodes.isHidden = true
-                    
-                    return
-                }
-                
-                guard let episodes = arrEpisodes else {
-                    self.lblCountEpisodes.text = "0"
-                    self.tblEpisodes.isHidden = true
-                    return
-                }
-                
-                self.lblCountEpisodes.text = "\(episodes.count)"
-                self.arrEpisodes = episodes
-                self.tblEpisodes.reloadData()
+                return
             }
+            
+            guard let episodes = arrEpisodes else {
+                self.lblCountEpisodes.text = "0"
+                self.tblEpisodes.isHidden = true
+                return
+            }
+            
+            self.lblCountEpisodes.text = "\(episodes.count)"
+            self.arrEpisodes = episodes
+            self.tblEpisodes.reloadData()
         }
     }
     
