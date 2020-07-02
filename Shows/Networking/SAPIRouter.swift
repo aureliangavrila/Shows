@@ -21,6 +21,7 @@ enum SAPIRouter {
     case getShowInfo(_ showId: String)
     
     case getShowEpisodes(_ showId: String)
+    case createEpisode(_ showId: String, _ mediaId: String, _ title: String, _ description: String, _ episode: String, _ season: String)
     
     
     case getCommentsForEpisode(_ episodeId: String)
@@ -59,6 +60,9 @@ extension SAPIRouter: Alamofire.URLRequestConvertible {
         case .getShowEpisodes(let showId):
             return "/api/shows/\(showId)/episodes"
             
+        case .createEpisode:
+            return "/api/episodes"
+            
         case .getCommentsForEpisode(let episodeId):
             return "/api/episodes/\(episodeId)/comments"
             
@@ -70,7 +74,8 @@ extension SAPIRouter: Alamofire.URLRequestConvertible {
     var method: Alamofire.HTTPMethod {
         switch self {
         case .login,
-             .postComment:
+             .postComment,
+             .createEpisode:
             
             return .post
         
@@ -90,6 +95,14 @@ extension SAPIRouter: Alamofire.URLRequestConvertible {
             
         case .postComment(let epiosdeId, let comment):
             return ["text": comment, "episodeId": epiosdeId]
+            
+        case .createEpisode(let showId, let mediaId, let title, let description, let episode, let season):
+            return ["showId" : showId,
+            "mediaId" : mediaId,
+            "title" : title,
+            "description" : description,
+            "episodeNumber" : episode,
+            "season" : season]
             
         case .getShows,
              .getShowInfo,
@@ -113,7 +126,8 @@ extension SAPIRouter: Alamofire.URLRequestConvertible {
              .getShowInfo,
              .getShowEpisodes,
              .getCommentsForEpisode,
-             .postComment:
+             .postComment,
+             .createEpisode:
             
             defaultHeaders["Authorization"] = SAPIRouter.sessionToken
             

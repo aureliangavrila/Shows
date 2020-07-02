@@ -19,49 +19,8 @@ class ShowServices {
     
     let baseURL = Constants.baseURL
     
-    fileprivate var networkTask: SNetworkTask!
-    
-    private func start(_ path: String, method: HTTPMethod, paramters: [String : String]?, headers: HTTPHeaders, completion: @escaping (AFDataResponse<Any>) -> Void) {
-        AF.request(baseURL + path,
-                   method: method,
-                   parameters: paramters,
-                   encoding: JSONEncoding.default,
-                   headers: headers)
-            .validate()
-            .responseJSON { (response) in
-                completion(response)
-        }
-    }
-    
     //MARK: - MAIN
-    
-    private func createEpisode(_ showId: String, title: String, season: String, episode: String, description: String, mediaId: String,
-                               completion: @escaping (_ succes: Bool, _ error: Error?) -> Void ) {
-        
-        headers["Authorization"] = authToken
-        
-        let parameters = ["showId" : showId,
-                          "mediaId" : mediaId,
-                          "title" : title,
-                          "description" : description,
-                          "episodeNumber" : episode,
-                          "season" : season]
-        
-        start("/api/episodes",
-              method: .post,
-              paramters: parameters,
-              headers: headers) { (response) in
-                
-                switch response.result {
-                case .success( _):
-                    completion(true, nil)
-                    
-                case .failure(let afError):
-                    completion(false, SError.apiError(message: afError.localizedDescription))
-                }
-        }
-    }
-    
+
     func addEpisode(_ image: UIImage, showId: String, title: String, season: String, episode: String, description: String,
                     completion: @escaping (_ succes: Bool, _ error: Error?) -> Void ) {
         
@@ -100,7 +59,7 @@ class ShowServices {
                     return
                 }
                 
-                self.createEpisode(showId, title: title, season: season, episode: episode, description: description, mediaId: mediaId) { (success, error) in
+                EpisodesService.shared.createEpisode(showId, title: title, season: season, episode: episode, description: description, mediaId: mediaId) { (success, error) in
                     completion(success, error)
                 }
                 
