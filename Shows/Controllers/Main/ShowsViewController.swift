@@ -15,6 +15,8 @@ class ShowsViewController: UIViewController {
     
     var arrShows = [Show]()
     
+    let viewModel = ShowsViewModel()
+    
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +73,8 @@ class ShowsViewController: UIViewController {
     //MARK: - IBAction Methods
     
     @IBAction func btnLogout(_ sender: UIButton) {
-        clearKeychain()
+//        clearKeychain()
+        viewModel.logoutTapped()
         
         self.navigationController?.popViewController(animated: true)
     }

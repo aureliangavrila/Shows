@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		045B7EF224B6E36C003391BE /* ShowsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045B7EF124B6E36C003391BE /* ShowsViewModel.swift */; };
 		045DCF8A2482E0B900C18044 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF892482E0B900C18044 /* AppDelegate.swift */; };
 		045DCF8C2482E0B900C18044 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF8B2482E0B900C18044 /* SceneDelegate.swift */; };
 		045DCF8E2482E0B900C18044 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF8D2482E0B900C18044 /* LandingViewController.swift */; };
@@ -46,6 +47,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		045B7EF124B6E36C003391BE /* ShowsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowsViewModel.swift; sourceTree = "<group>"; };
 		045DCF862482E0B900C18044 /* Shows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shows.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		045DCF892482E0B900C18044 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		045DCF8B2482E0B900C18044 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 		045DCFA12482E87B00C18044 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				045B7EF124B6E36C003391BE /* ShowsViewModel.swift */,
 				045DCFB124837F3400C18044 /* ShowsViewController.swift */,
 				045DCFB824838B1200C18044 /* ShowDetailsViewController.swift */,
 				045DCFBA24838B8500C18044 /* EpisodeDetailsViewController.swift */,
@@ -397,6 +400,7 @@
 				0494348B2484FCBD00DD20A5 /* Episode.swift in Sources */,
 				045DCFB02483041000C18044 /* UtilsCheck.swift in Sources */,
 				045DCFB924838B1200C18044 /* ShowDetailsViewController.swift in Sources */,
+				045B7EF224B6E36C003391BE /* ShowsViewModel.swift in Sources */,
 				045DCFAD2482FB2900C18044 /* NavigationManager.swift in Sources */,
 				045DCFA32482E8AF00C18044 /* BaseViewController.swift in Sources */,
 				045DCF8A2482E0B900C18044 /* AppDelegate.swift in Sources */,

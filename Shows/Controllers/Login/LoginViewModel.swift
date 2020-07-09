@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class LoginViewModel {
+public final class LoginViewModel {
     
     let credentials: Binder<(String?, String?)> = Binder((nil, nil))
     let shouldRememberMe = Binder(false)

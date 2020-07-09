@@ -30,13 +30,13 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         setupUI()
+        requestLogin()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         loadCredentials()
-        requestLogin()
         enableLoginButton()
     }
     
