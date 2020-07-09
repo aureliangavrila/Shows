@@ -23,6 +23,8 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     var rememberMe = false
     var shouldShowPassword = false
     
+    private let viewModel = LoginViewModel()
+    
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +36,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         super.viewWillAppear(animated)
         
         loadCredentials()
+        requestLogin()
         enableLoginButton()
     }
     
@@ -102,33 +105,63 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     func loadCredentials() {
-        let shouldRememberMe = UserDefaults.standard.bool(forKey: Constants.k_RememberMe)
+        viewModel.shouldRememberMe.bind {[weak self] (shouldRememberMe) in
+            guard let self = self else { return }
+            
+            self.rememberMe = shouldRememberMe
+            self.imgCheckRememberMe.image = self.rememberMe ? UIImage(named: "icon_checkbox_filled") : UIImage(named: "icon_checkbox_empty")
+        }
         
-        rememberMe = shouldRememberMe
-        imgCheckRememberMe.image = rememberMe ? UIImage(named: "icon_checkbox_filled") : UIImage(named: "icon_checkbox_empty")
+        if self.rememberMe {
+            self.viewModel.credentials.bind { [weak self] (email, password) in
+                guard let self = self else { return }
+                
+                self.txfEmail.text = email
+                self.txfPassword.text = password
+            }
+        }
+    }
+    
+    func requestLogin() {
+        viewModel.updateLoadingClosure = {
+            self.viewModel.isLoading ? SVProgressHUD.show() : SVProgressHUD.dismiss()
+        }
         
-        if rememberMe {
-            guard let email = UserDefaults.standard.value(forKey: Constants.k_EmailUser) as? String  else {
+        viewModel.showAlertClosure = {
+            guard let error = self.viewModel.error else {
                 return
             }
             
-            do {
-                let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
-                                                        account: email,
-                                                        accessGroup: KeychainConfiguration.accessGroup)
-                
-                let keychainPassword = try passwordItem.readPassword()
-                
-                txfEmail.text = email
-                txfPassword.text = keychainPassword
-                
-            } catch {
-                print("Error reading password from keychain - \(error)")
-            }
+            let alert = UtilsDisplay.okAlert(name: "Error", message: error.localizedDescription)
+            self.present(alert, animated: true, completion: nil)
         }
-        else {
-            txfEmail.text = ""
-            txfPassword.text = ""
+        
+        viewModel.loginRequestResult.bind {[weak self] (success) in
+            guard let self = self else { return }
+            
+            guard success == true else {
+                return
+            }
+            
+            if self.rememberMe {
+                let email = self.txfEmail.text!
+                let password = self.txfPassword.text!
+                
+                UserDefaults.standard.set(email, forKey: Constants.k_EmailUser)
+                
+                do {
+                    let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
+                                                       account: email,
+                                                       accessGroup: KeychainConfiguration.accessGroup)
+                    
+                    try passwordItem.savePassword(password)
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+            
+            let vc = NavigationManager.shared.instantiateShowsViewController()
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -150,49 +183,51 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     @IBAction func btnLogin(_ sender: UIButton) {
-        SVProgressHUD.show()
-        
         //>>    Save credentials
         UserDefaults.standard.set(rememberMe, forKey: Constants.k_RememberMe)
         
-        let email = txfEmail.text!
-        let password = txfPassword.text!
+        let email = self.txfEmail.text!
+        let password = self.txfPassword.text!
         
-        ShowServices.shared.getUser(email, password: password) { [weak self] (succes, error)  in
-            guard let self = self else { return }
-            
-             SVProgressHUD.dismiss()
-            
-            guard error == nil else {
-                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
-                
-                return 
-            }
-            
-            guard succes == true else {
-                return 
-            }
-            
-            if self.rememberMe {
-                SVProgressHUD.dismiss()
-                
-                   UserDefaults.standard.set(email, forKey: Constants.k_EmailUser)
-                   
-                   do {
-                       let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
-                                                          account: email,
-                                                          accessGroup: KeychainConfiguration.accessGroup)
-                       
-                       try passwordItem.savePassword(password)
-                   } catch {
-                       print(error.localizedDescription)
-                   }
-               }
-            
-            let vc = NavigationManager.shared.instantiateShowsViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+        self.viewModel.requestLogin(email, password: password)
+        
+//        SVProgressHUD.show()
+//
+//        ShowServices.shared.getUser(email, password: password) { [weak self] (succes, error)  in
+//            guard let self = self else { return }
+//
+//             SVProgressHUD.dismiss()
+//
+//            guard error == nil else {
+//                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+//                self.present(alert, animated: true, completion: nil)
+//
+//                return
+//            }
+//
+//            guard succes == true else {
+//                return
+//            }
+//
+//            if self.rememberMe {
+//                SVProgressHUD.dismiss()
+//
+//                   UserDefaults.standard.set(email, forKey: Constants.k_EmailUser)
+//
+//                   do {
+//                       let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
+//                                                          account: email,
+//                                                          accessGroup: KeychainConfiguration.accessGroup)
+//
+//                       try passwordItem.savePassword(password)
+//                   } catch {
+//                       print(error.localizedDescription)
+//                   }
+//               }
+//
+//            let vc = NavigationManager.shared.instantiateShowsViewController()
+//            self.navigationController?.pushViewController(vc, animated: true)
+//        }
     }
     
     //MARK: - UITextFieldDelegate Methods
