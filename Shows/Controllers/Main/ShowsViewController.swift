@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import SVProgressHUD
 
 class ShowsViewController: UIViewController {
     
@@ -22,7 +23,7 @@ class ShowsViewController: UIViewController {
         super.viewDidLoad()
         
         setupUI()
-        getShows()
+        registerForShowsUpdates()
     }
     
     //MARK: - Custom Methods
@@ -52,21 +53,23 @@ class ShowsViewController: UIViewController {
     
     //MARK: - API Methods
     
-    func getShows() {
-        ShowServices.shared.getShows {[weak self] (arrayShows, error) in
-            guard let self = self else { return }
-            
-            DispatchQueue.main.async {
-                guard error == nil else {
-                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    return
-                }
-                
-                self.arrShows = arrayShows!
-                self.tblShows.reloadData()
+    func registerForShowsUpdates() {
+        viewModel.updateLoadingClosure = {
+            self.viewModel.isLoading ? SVProgressHUD.show() : SVProgressHUD.dismiss()
+        }
+        
+        viewModel.showAlertClosure = {
+            guard let error = self.viewModel.error else {
+                return
             }
+            
+            let alert = UtilsDisplay.okAlert(name: "Error", message: error.localizedDescription)
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        viewModel.shows.bind { (arrShows) in
+            self.arrShows = arrShows!
+            self.tblShows.reloadData()
         }
     }
     
@@ -114,6 +117,7 @@ extension ShowsViewController: UITableViewDataSource, UITableViewDelegate {
         
         let vc = NavigationManager.shared.instantiateShowDetailsViewController()
         vc.currShow = self.arrShows[indexPath.row]
+        vc.viewModel = ShowDetailsViewModel(arrShows[indexPath.row])
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

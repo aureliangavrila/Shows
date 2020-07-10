@@ -25,6 +25,9 @@ class ShowDetailsViewController: BaseViewController {
     var currShow: Show!
     var arrEpisodes = [Episode]()
     
+    var viewModel: ShowDetailsViewModel!
+    
+    
     // MARK: - StatusBar Methods
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return .lightContent
@@ -37,8 +40,8 @@ class ShowDetailsViewController: BaseViewController {
         setupUI()
         updateUI(show: self.currShow)
         registerCells()
-        getShowInfo()
-        getShowEpisodes()
+        registerForShowInfo()
+        registerForShowEpisodes()
     }
     
     override func viewDidLayoutSubviews() {
@@ -54,7 +57,7 @@ class ShowDetailsViewController: BaseViewController {
         
         scrollView.addPullToRefresh {
             self.scrollView.pullToRefreshView.arrowColor = .white
-            self.getShowEpisodes()
+            self.viewModel.getShowEpisodes(self.currShow)
         }
     
     }
@@ -83,56 +86,87 @@ class ShowDetailsViewController: BaseViewController {
     
     //MARK: - API Methods
     
-    func getShowInfo() {
-        ShowServices.shared.getShowInfo(currShow) {[weak self] (show, error) in
+    func registerForShowInfo() {
+        viewModel.updateLoadingClosure = {
+            self.viewModel.isLoading ? SVProgressHUD.show() : SVProgressHUD.dismiss()
+        }
+        
+        viewModel.showAlertClosure = {
+            guard let error = self.viewModel.error else {
+                return
+            }
+            
+            let alert = UtilsDisplay.okAlert(name: "Error", message: error.localizedDescription)
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        viewModel.show.bind {[weak self] (show) in
             guard let self = self else { return }
             
-            DispatchQueue.main.async {
-                guard error == nil else {
-                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    return
-                }
-                
-                self.currShow = show!
-                self.updateUI(show: self.currShow)
-            }
+            self.currShow = show
+            self.updateUI(show: self.currShow)
         }
     }
     
-    func getShowEpisodes() {
-        SVProgressHUD.show()
-        
-        ShowServices.shared.getShowEpisodes(currShow) {[weak self] (arrEpisodes, error) in
-            guard let self = self else { return }
-            
-            DispatchQueue.main.async {
-                SVProgressHUD.dismiss()
-                
-                self.scrollView.pullToRefreshView.stopAnimating()
-                
-                guard error == nil else {
-                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    self.lblCountEpisodes.text = "0"
-                    self.tblEpisodes.isHidden = true
-                    
-                    return
-                }
-                
-                guard let episodes = arrEpisodes else {
-                    self.lblCountEpisodes.text = "0"
-                    self.tblEpisodes.isHidden = true
-                    return
-                }
-                
-                self.lblCountEpisodes.text = "\(episodes.count)"
-                self.arrEpisodes = episodes
-                self.tblEpisodes.reloadData()
-            }
+    func registerForShowEpisodes() {
+        viewModel.updateLoadingEpisodesClosure = {
+            self.viewModel.isLoadingEpisodes ? SVProgressHUD.show() : SVProgressHUD.dismiss()
+            self.scrollView.pullToRefreshView.stopAnimating()
         }
+        
+        viewModel.showEpisodesErrorClosure = {
+            guard let error = self.viewModel.episodesError else {
+                return
+            }
+            
+            let alert = UtilsDisplay.okAlert(name: "Error", message: error.localizedDescription)
+            self.present(alert, animated: true, completion: nil)
+            
+            self.lblCountEpisodes.text = "0"
+            self.tblEpisodes.isHidden = true
+        }
+        
+        viewModel.episodes.bind { (episodes) in
+            guard let episodes = episodes else {
+                self.lblCountEpisodes.text = "0"
+                self.tblEpisodes.isHidden = true
+                return
+            }
+            
+            self.lblCountEpisodes.text = "\(episodes.count)"
+            self.arrEpisodes = episodes
+            self.tblEpisodes.reloadData()
+        }
+        
+//        ShowServices.shared.getShowEpisodes(currShow) {[weak self] (arrEpisodes, error) in
+//            guard let self = self else { return }
+//
+//            DispatchQueue.main.async {
+//                SVProgressHUD.dismiss()
+//
+//                self.scrollView.pullToRefreshView.stopAnimating()
+//
+//                guard error == nil else {
+//                    let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
+//                    self.present(alert, animated: true, completion: nil)
+//
+//                    self.lblCountEpisodes.text = "0"
+//                    self.tblEpisodes.isHidden = true
+//
+//                    return
+//                }
+//
+//                guard let episodes = arrEpisodes else {
+//                    self.lblCountEpisodes.text = "0"
+//                    self.tblEpisodes.isHidden = true
+//                    return
+//                }
+//
+//                self.lblCountEpisodes.text = "\(episodes.count)"
+//                self.arrEpisodes = episodes
+//                self.tblEpisodes.reloadData()
+//            }
+//        }
     }
     
     //MARK: - IBActions Methods
@@ -193,6 +227,6 @@ extension ShowDetailsViewController: UITableViewDataSource, UITableViewDelegate,
     //MARK: - AddNewEpisodeDelegate Methods
     
     func newEpisodeCreated() {
-        self.getShowEpisodes()
+        self.viewModel.getShowEpisodes(currShow)
     }
 }

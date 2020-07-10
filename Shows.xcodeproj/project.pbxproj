@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		045B7EF224B6E36C003391BE /* ShowsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045B7EF124B6E36C003391BE /* ShowsViewModel.swift */; };
+		045B7EF624B83398003391BE /* ShowDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045B7EF524B83398003391BE /* ShowDetailsViewModel.swift */; };
 		045DCF8A2482E0B900C18044 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF892482E0B900C18044 /* AppDelegate.swift */; };
 		045DCF8C2482E0B900C18044 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF8B2482E0B900C18044 /* SceneDelegate.swift */; };
 		045DCF8E2482E0B900C18044 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045DCF8D2482E0B900C18044 /* LandingViewController.swift */; };
@@ -48,6 +49,7 @@
 
 /* Begin PBXFileReference section */
 		045B7EF124B6E36C003391BE /* ShowsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowsViewModel.swift; sourceTree = "<group>"; };
+		045B7EF524B83398003391BE /* ShowDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowDetailsViewModel.swift; sourceTree = "<group>"; };
 		045DCF862482E0B900C18044 /* Shows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shows.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		045DCF892482E0B900C18044 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		045DCF8B2482E0B900C18044 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 			children = (
 				045B7EF124B6E36C003391BE /* ShowsViewModel.swift */,
 				045DCFB124837F3400C18044 /* ShowsViewController.swift */,
+				045B7EF524B83398003391BE /* ShowDetailsViewModel.swift */,
 				045DCFB824838B1200C18044 /* ShowDetailsViewController.swift */,
 				045DCFBA24838B8500C18044 /* EpisodeDetailsViewController.swift */,
 				045DCFBC24838B9400C18044 /* AddEpisodeViewController.swift */,
@@ -396,6 +399,7 @@
 				045DCFAA2482F38400C18044 /* LoginViewController.swift in Sources */,
 				045DCFBF24838BA000C18044 /* CommentsViewController.swift in Sources */,
 				046EB08B24862A6C0026B529 /* UIScreen+Utils.swift in Sources */,
+				045B7EF624B83398003391BE /* ShowDetailsViewModel.swift in Sources */,
 				045DCF8E2482E0B900C18044 /* LandingViewController.swift in Sources */,
 				0494348B2484FCBD00DD20A5 /* Episode.swift in Sources */,
 				045DCFB02483041000C18044 /* UtilsCheck.swift in Sources */,

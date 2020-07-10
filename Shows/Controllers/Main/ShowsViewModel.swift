@@ -10,7 +10,25 @@ import Foundation
 
 public final class ShowsViewModel {
     
+    let shows:Binder<[Show]?> = Binder([])
+    
+    var error: Error? {
+        didSet {
+            self.showAlertClosure?()
+        }
+    }
+    
+    var isLoading: Bool = false {
+        didSet {
+            self.updateLoadingClosure?()
+        }
+    }
+    
+    var showAlertClosure: (() -> Void)?
+    var updateLoadingClosure: (() -> Void)?
+    
     init() {
+        getShows()
     }
     
     
@@ -37,5 +55,23 @@ public final class ShowsViewModel {
         }
     }
     
-    
+    func getShows() {
+        isLoading = true
+        
+        ShowServices.shared.getShows {[weak self] (arrayShows, error) in
+            guard let self = self else { return }
+            
+            self.isLoading = false
+            
+            DispatchQueue.main.async {
+                guard error == nil else {
+                    self.error = error
+                    
+                    return
+                }
+                
+                self.shows.value = arrayShows
+            }
+        }
+    }
 }

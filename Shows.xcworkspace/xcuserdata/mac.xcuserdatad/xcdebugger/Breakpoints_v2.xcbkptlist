@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "422269E1-D89F-4505-B63B-9E46D148693B"
+            uuid = "CDE29B6B-015A-46B8-B8C5-EC489DD0BE83"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Shows/Controllers/Main/ShowsViewModel.swift"
+            filePath = "Shows/Controllers/Main/ShowDetailsViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
-            landmarkName = "clearKeychain()"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
+            landmarkName = "registerForShowEpisodes()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
