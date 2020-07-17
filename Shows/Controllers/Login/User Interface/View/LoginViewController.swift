@@ -23,6 +23,8 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     var rememberMe = false
     var shouldShowPassword = false
     
+    var eventHandler: SLoginModuleInterface?
+    
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +36,7 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        loadCredentials()
+        self.eventHandler?.interfaceWillAppear()
         enableLoginButton()
     }
     
@@ -104,39 +106,6 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
         btnLogin.alpha = 1
     }
     
-    func loadCredentials() {
-        let shouldRememberMe = UserDefaults.standard.bool(forKey: Constants.k_RememberMe)
-        
-        rememberMe = shouldRememberMe
-        imgCheckRememberMe.image = rememberMe ? UIImage(named: "icon_checkbox_filled") : UIImage(named: "icon_checkbox_empty")
-        
-        if rememberMe {
-            guard let email = UserDefaults.standard.value(forKey: Constants.k_EmailUser) as? String  else {
-                return
-            }
-            
-            do {
-                let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
-                                                   account: email,
-                                                   accessGroup: KeychainConfiguration.accessGroup)
-                
-                let keychainPassword = try passwordItem.readPassword()
-                
-                txfEmail.text = email
-                txfPassword.text = keychainPassword
-                
-            } catch {
-                #if DEBUG
-                print("Error reading password from keychain - \(error)")
-                #endif
-            }
-        }
-        else {
-            txfEmail.text = ""
-            txfPassword.text = ""
-        }
-    }
-    
     //MARK: - IBActions Methods
     
     @IBAction func btnShowPassword(_ sender: UIButton) {
@@ -155,51 +124,13 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     @IBAction func btnLogin(_ sender: UIButton) {
-        SVProgressHUD.show()
-        
         //>>    Save credentials
         UserDefaults.standard.set(rememberMe, forKey: Constants.k_RememberMe)
         
         let email = txfEmail.text!
         let password = txfPassword.text!
         
-        LoginService.shared.getUser(email, password: password) { [weak self] (succes, error)  in
-            guard let self = self else { return }
-            
-            SVProgressHUD.dismiss()
-            
-            guard error == nil else {
-                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
-                
-                return 
-            }
-            
-            guard succes == true else {
-                return 
-            }
-            
-            if self.rememberMe {
-                SVProgressHUD.dismiss()
-                
-                UserDefaults.standard.set(email, forKey: Constants.k_EmailUser)
-                
-                do {
-                    let passwordItem = KeychainManager(service: KeychainConfiguration.serviceName,
-                                                       account: email,
-                                                       accessGroup: KeychainConfiguration.accessGroup)
-                    
-                    try passwordItem.savePassword(password)
-                } catch {
-                    #if DEBUG
-                    print(error.localizedDescription)
-                    #endif
-                }
-            }
-            
-            let vc = NavigationManager.shared.instantiateShowsViewController()
-            self.navigationController?.pushViewController(vc, animated: true)
-        }
+        self.eventHandler?.loginUser(rememberMe: self.rememberMe, email: email, password: password)
     }
     
     //MARK: - UITextFieldDelegate Methods
@@ -263,4 +194,32 @@ class LoginViewController: BaseViewController, UITextFieldDelegate {
     }
     
     
+}
+
+extension LoginViewController: SLoginUserInterface {
+    
+    func showLoading() {
+        SVProgressHUD.show()
+    }
+    
+    func hideLoading() {
+        SVProgressHUD.dismiss()
+    }
+    
+    func showErrorWithMesage(message: String) {
+        
+    }
+    
+    func setupCredentials(rememberMe: Bool, email: String, password: String) {
+        self.rememberMe = rememberMe
+        imgCheckRememberMe.image = rememberMe ? UIImage(named: "icon_checkbox_filled") : UIImage(named: "icon_checkbox_empty")
+        
+        txfEmail.text = email
+        txfPassword.text = password
+    }
+    
+    func showLoginSuccess() {
+        let vc = NavigationManager.shared.instantiateShowsViewController()
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }

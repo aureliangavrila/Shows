@@ -8,13 +8,18 @@
 
 import Foundation
 
-class LoginService {
-    
-    static let shared = LoginService()
+protocol SLoginServiceDelegate {
+    func showSuccesLoginUser(success: Bool)
+    func showError(error: SError)
+}
+
+class LoginService: SLoginPresenterModuleInterface {
     
     fileprivate var networkTask: SNetworkTask!
     
-    func getUser(_ email: String, password: String, completion: @escaping (_ succes: Bool, _ error: Error?) -> Void ){
+    var delegate: SLoginServiceDelegate?
+    
+    func getUser(_ email: String, password: String, completion: @escaping (_ succes: Bool, _ error: Error?) -> Void ) {
         networkTask = SNetworkTask(route: SAPIRouter.login(email, password: password))
         
         networkTask.stat { (result) in
@@ -22,25 +27,25 @@ class LoginService {
             case .success(let data):
                 
                 guard data != nil else {
-                    completion(false, nil)
+                    self.delegate?.showSuccesLoginUser(success: false)
                     
                     return
                 }
                 
                 guard let json = JSONParser.shared.parseToJSON(data!) else {
-                    completion(false, nil)
+                    self.delegate?.showSuccesLoginUser(success: false)
                     
                     return
                 }
             
                 guard let jsonData = json["data"] as? [String : Any] else {
-                    completion(false, nil)
+                    self.delegate?.showSuccesLoginUser(success: false)
 
                     return
                 }
 
                 guard let token = jsonData["token"] as? String else {
-                    completion(false, nil)
+                    self.delegate?.showSuccesLoginUser(success: false)
 
                     return
                 }
@@ -48,9 +53,10 @@ class LoginService {
                 SAPIRouter.sessionToken = token
                 
                 completion(true, nil)
+                self.delegate?.showSuccesLoginUser(success: true)
                 
             case .failure(let error):
-                completion(false, error)
+                self.delegate?.showError(error: error)
             }
         }
         

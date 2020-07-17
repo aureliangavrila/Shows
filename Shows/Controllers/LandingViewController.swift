@@ -17,7 +17,15 @@ class LandingViewContoller: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let vc = NavigationManager.shared.instantiateLoginViewController()
+        let vc          = NavigationManager.shared.instantiateLoginViewController()
+        let presenter   = SLoginPresenter()
+        let intereactor = LoginService()
+        
+        vc.eventHandler = presenter
+        presenter.userInterface = vc
+        presenter.interactor = intereactor
+        intereactor.delegate = presenter
+        
         self.navigationController?.pushViewController(vc, animated: true)
     }
 
