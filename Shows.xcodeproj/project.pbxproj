@@ -49,6 +49,9 @@
 		0494348B2484FCBD00DD20A5 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0494348A2484FCBD00DD20A5 /* Episode.swift */; };
 		0494348D24850B6700DD20A5 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0494348C24850B6700DD20A5 /* Comment.swift */; };
 		04A62CAD24856F9B009D87B3 /* UtilsDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A62CAC24856F9B009D87B3 /* UtilsDisplay.swift */; };
+		04D0659C24C563E50060DD41 /* ShowsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D0659B24C563E50060DD41 /* ShowsPresenter.swift */; };
+		04D0659E24C564110060DD41 /* SShowsUserInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D0659D24C564110060DD41 /* SShowsUserInterface.swift */; };
+		04D065A024C5650D0060DD41 /* SShowsModuleInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D0659F24C5650D0060DD41 /* SShowsModuleInterface.swift */; };
 		04DB589D24988EFB00C21DE0 /* SAPIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04DB589C24988EFB00C21DE0 /* SAPIRouter.swift */; };
 		CC67BB320CE862FF236D504F /* Pods_Shows.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D437BEBF292D762C50B880B /* Pods_Shows.framework */; };
 /* End PBXBuildFile section */
@@ -98,6 +101,9 @@
 		0494348A2484FCBD00DD20A5 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		0494348C24850B6700DD20A5 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		04A62CAC24856F9B009D87B3 /* UtilsDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilsDisplay.swift; sourceTree = "<group>"; };
+		04D0659B24C563E50060DD41 /* ShowsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowsPresenter.swift; sourceTree = "<group>"; };
+		04D0659D24C564110060DD41 /* SShowsUserInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SShowsUserInterface.swift; sourceTree = "<group>"; };
+		04D0659F24C5650D0060DD41 /* SShowsModuleInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SShowsModuleInterface.swift; sourceTree = "<group>"; };
 		04DB589C24988EFB00C21DE0 /* SAPIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SAPIRouter.swift; sourceTree = "<group>"; };
 		37FC9807AC9D493B50019538 /* Pods-Shows.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shows.debug.xcconfig"; path = "Target Support Files/Pods-Shows/Pods-Shows.debug.xcconfig"; sourceTree = "<group>"; };
 		6D437BEBF292D762C50B880B /* Pods_Shows.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shows.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -240,7 +246,7 @@
 		045DCFA12482E87B00C18044 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				045DCFB124837F3400C18044 /* ShowsViewController.swift */,
+				04D0659524C563700060DD41 /* Shows */,
 				045DCFB824838B1200C18044 /* ShowDetailsViewController.swift */,
 				045DCFBA24838B8500C18044 /* EpisodeDetailsViewController.swift */,
 				045DCFBC24838B9400C18044 /* AddEpisodeViewController.swift */,
@@ -311,6 +317,49 @@
 				0494348C24850B6700DD20A5 /* Comment.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		04D0659524C563700060DD41 /* Shows */ = {
+			isa = PBXGroup;
+			children = (
+				04D0659724C563920060DD41 /* Module Interface */,
+				04D0659624C563820060DD41 /* User Interface */,
+			);
+			path = Shows;
+			sourceTree = "<group>";
+		};
+		04D0659624C563820060DD41 /* User Interface */ = {
+			isa = PBXGroup;
+			children = (
+				04D0659D24C564110060DD41 /* SShowsUserInterface.swift */,
+				04D0659924C563AB0060DD41 /* Presenter */,
+				04D0659824C5639D0060DD41 /* View */,
+			);
+			path = "User Interface";
+			sourceTree = "<group>";
+		};
+		04D0659724C563920060DD41 /* Module Interface */ = {
+			isa = PBXGroup;
+			children = (
+				04D0659F24C5650D0060DD41 /* SShowsModuleInterface.swift */,
+			);
+			path = "Module Interface";
+			sourceTree = "<group>";
+		};
+		04D0659824C5639D0060DD41 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				045DCFB124837F3400C18044 /* ShowsViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		04D0659924C563AB0060DD41 /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				04D0659B24C563E50060DD41 /* ShowsPresenter.swift */,
+			);
+			path = Presenter;
 			sourceTree = "<group>";
 		};
 		35B735679D270314B54D1524 /* Frameworks */ = {
@@ -472,9 +521,11 @@
 				043BF05D24AD9420004B663C /* JSONParser.swift in Sources */,
 				046059AF24A4649F0003EE04 /* LoginService.swift in Sources */,
 				0494348D24850B6700DD20A5 /* Comment.swift in Sources */,
+				04D0659C24C563E50060DD41 /* ShowsPresenter.swift in Sources */,
 				045DCFC92483E1A300C18044 /* Constants.swift in Sources */,
 				045DCFAA2482F38400C18044 /* LoginViewController.swift in Sources */,
 				045B7F0D24BED2C3003391BE /* SLoginUserInterface.swift in Sources */,
+				04D065A024C5650D0060DD41 /* SShowsModuleInterface.swift in Sources */,
 				045DCFBF24838BA000C18044 /* CommentsViewController.swift in Sources */,
 				046EB08B24862A6C0026B529 /* UIScreen+Utils.swift in Sources */,
 				045DCF8E2482E0B900C18044 /* LandingViewController.swift in Sources */,
@@ -493,6 +544,7 @@
 				045DCFC624838E2900C18044 /* CommentTVCell.swift in Sources */,
 				045DCFCB2483E48600C18044 /* KeychainManager.swift in Sources */,
 				043BF05A24AC4185004B663C /* ShowService.swift in Sources */,
+				04D0659E24C564110060DD41 /* SShowsUserInterface.swift in Sources */,
 				043BE9F5249B39B300EDBC6A /* SNetworkTask.swift in Sources */,
 				045DCFA62482E9D800C18044 /* UIViewController+Utils.swift in Sources */,
 				04DB589D24988EFB00C21DE0 /* SAPIRouter.swift in Sources */,

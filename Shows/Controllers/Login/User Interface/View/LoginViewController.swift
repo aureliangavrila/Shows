@@ -220,6 +220,11 @@ extension LoginViewController: SLoginUserInterface {
     
     func showLoginSuccess() {
         let vc = NavigationManager.shared.instantiateShowsViewController()
+        let presenter = ShowsPresenter()
+        
+        vc.eventHandler = presenter
+        presenter.userInterface = vc
+        
         self.navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import Kingfisher
+import SVProgressHUD
 
 class ShowsViewController: UIViewController {
     
@@ -15,69 +16,28 @@ class ShowsViewController: UIViewController {
     
     var arrShows = [Show]()
     
+    var eventHandler: SShowsModuleInterface?
+    
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
+        self.eventHandler?.interfaceDidLoad()
         registerCells()
-        getShows()
     }
     
     //MARK: - Custom Methods
-    
-    func setupUI() {
-       
-    }
     
     func registerCells() {
          self.tblShows.register(UINib(nibName: "ShowTVCell", bundle: nil), forCellReuseIdentifier: "ShowTVCell_ID")
     }
     
-    func clearKeychain() {
-        UserDefaults.standard.set(false, forKey: Constants.k_RememberMe)
-        UserDefaults.standard.removeObject(forKey: Constants.k_EmailUser)
-        
-        do {
-            let passwordItems = try KeychainManager.passwordItems(forService: KeychainConfiguration.serviceName, accessGroup: KeychainConfiguration.accessGroup)
-            for passwordItem in passwordItems {
-                
-                do {
-                    try passwordItem.deleteItem()
-                }catch {
-                    fatalError("Error deleting from keychain - \(error)")
-                }
-            }
-        } catch {
-            fatalError("Error reading from keychain - \(error)")
-        }
-    }
-    
-    //MARK: - API Methods
-    
-    func getShows() {
-        ShowService.shared.getShows {[weak self] (arrayShows, error) in
-            guard let self = self else { return }
-            
-            guard error == nil else {
-                let alert = UtilsDisplay.okAlert(name: "Error", message: error!.localizedDescription)
-                self.present(alert, animated: true, completion: nil)
-                
-                return
-            }
-            
-            self.arrShows = arrayShows!
-            self.tblShows.reloadData()
-        }
-    }
-    
     //MARK: - IBAction Methods
     
     @IBAction func btnLogout(_ sender: UIButton) {
-        clearKeychain()
-        
-        self.navigationController?.popViewController(animated: true)
+        eventHandler?.logoutButtonTapped()
     }
+    
     
 }
 
@@ -111,5 +71,30 @@ extension ShowsViewController: UITableViewDataSource, UITableViewDelegate {
         let vc = NavigationManager.shared.instantiateShowDetailsViewController()
         vc.currShow = self.arrShows[indexPath.row]
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+extension ShowsViewController: SShowsUserInterface {
+    
+    func showLoading() {
+        SVProgressHUD.show()
+    }
+    
+    func hideLoading() {
+        SVProgressHUD.dismiss()
+    }
+    
+    func showErrorWithMesage(message: String) {
+        let alert = UtilsDisplay.okAlert(name: "Error", message: message)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func setDataSource(shows: [Show]) {
+        self.arrShows = shows
+        self.tblShows.reloadData()
+    }
+    
+    func logoutPopViewController() {
+        self.navigationController?.popViewController(animated: true)
     }
 }
